@@ -8,12 +8,21 @@ const deleteOfficer = require('../controllers/officers/deleteOfficer')
 const postOfficer = async(req,res) => {
     const {name, birthDay, phone, email, position} = req.body
     try {
+        if (!name || !birthDay || !phone || !email || !position) {
+            return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
+        }
         const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, email, position)
-        return chargeNewOfficer ? res.status(201).json({Officers: chargeNewOfficer}) : res.status(404).json('Hubo un error al cargar al nuevo funcionario')
+        return res.status(201).json({Officers: chargeNewOfficer})
 
     } catch (error) {
-        error.message = 'Ocurrio un error en el procedimiento'
-        return res.status(500).json({ error: error.message })
+        if (error instanceof ValidationError) {
+            return res.status(422).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            return res.status(404).json({ error: error.message });
+        } else {
+            error.message = 'Ocurrió un error inesperado al crear los datos del funcionario';
+            return res.status(500).json({ error: error.message });
+        }
     }
 }
 
