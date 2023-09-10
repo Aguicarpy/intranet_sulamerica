@@ -6,23 +6,19 @@ const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 
 const postOfficer = async(req,res) => {
-    const {name, birthDay, phone, email, position} = req.body
+    const {name, birthDay, phone, email, position, password} = req.body
     try {
-        if (!name || !birthDay || !phone || !email || !position) {
+        if (!name || !birthDay || !phone || !email || !position || !password) {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
         }
-        const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, email, position)
+        const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, email, position, password)
         return res.status(201).json({Officers: chargeNewOfficer})
 
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({ error: error.message });
-        } else if (error instanceof NotFoundError) {
-            return res.status(404).json({ error: error.message });
-        } else {
-            error.message = 'Ocurrió un error inesperado al crear los datos del funcionario';
-            return res.status(500).json({ error: error.message });
-        }
+        console.error("Ocurrió un error al crear su cuenta de usuario", error);
+    return res
+      .status(500)
+      .json({ error: "Error al crear su cuenta de usuario" });
     }
 }
 

@@ -1,9 +1,8 @@
 const { DataTypes } = require('sequelize');
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
+const { hashPassword, comparePassword} = require('../helpers/passwordHashed')
+
 module.exports = (sequelize) => {
-  // defino el modelo
-  sequelize.define('Officer', {
+  const Officer = sequelize.define('Officer', {
     id:{
         type: DataTypes.UUID,   //Garantiza unicidad de id
         defaultValue: DataTypes.UUIDV4,   //uuid aleatorio pra registro na tabela
@@ -29,8 +28,27 @@ module.exports = (sequelize) => {
     email:{
         type: DataTypes.STRING,
         allowNull: false
+    },
+    password:{
+      type: DataTypes.STRING, 
+      allowNull: false,
     }
   },
   { timestamps: false }
 );
+
+Officer.beforeCreate(async function(user) {  // Antes de guardar un nuevo registro o actualizar la contraseña, hasheamos la contraseña
+    	if (user.changed('password')) {
+      		user.password = await hashPassword(user.password);
+    	}
+  	});
+  	Officer.beforeUpdate(async function(user) { 
+    	if (user.changed('password')) {
+      		user.password = await hashPassword(user.password);
+    	}
+  	});
+  	Officer.prototype.verifyPassword = async function(password) {  // Método para verificar la contraseña
+    	return await comparePassword(password, this.password);
+  	};
+  	return Officer; 
 };
