@@ -84,7 +84,7 @@
     font-weight: bold;
     text-transform: uppercase;
     font-size: 14px;
-    font-family: Montserrat;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     outline: none;
     cursor: pointer;
 }
