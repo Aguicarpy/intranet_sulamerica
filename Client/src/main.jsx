@@ -2,10 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import store from './Redux/store.js'
 
 //ESTE ARCHIVO ES EL INDEX.JS, SOLO QUE EN VITE TIENE QUE SER MAIN.JSX
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  // </React.StrictMode>,
 )
