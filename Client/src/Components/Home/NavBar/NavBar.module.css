@@ -1,0 +1,31 @@
+.navbar {
+  background-color: #ffffff;
+  color: #fff;
+  padding: 25px 0;
+  text-align: center;
+}
+
+.logo{
+  width: 280px;
+  margin-right: 50px;
+}
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px;
+}
+
+.navbar li {
+  display: inline;
+  margin-right: 20px;
+}
+
+.navbar a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
