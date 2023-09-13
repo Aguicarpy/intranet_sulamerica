@@ -4,7 +4,7 @@ import { useState } from 'react'
 import './App.css'
 import {Routes , Route} from 'react-router-dom'
 import Login from './Views/Login/Login'
-
+import Home from './Views/Home/Home'
 
 //RENDERIZAR LAS VIEWS
 function App() {
@@ -15,6 +15,7 @@ function App() {
         <>
           <Routes>
               <Route path='/' element={<Login />} />
+              <Route path='/inicio' element={<Home />}></Route>
           </Routes>
         </>
       </div>
