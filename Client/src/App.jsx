@@ -4,6 +4,7 @@ import { useState } from 'react'
 import './App.css'
 import {Routes , Route} from 'react-router-dom'
 import Login from './Views/Login/Login'
+import Profile from './Views/Profile/Profile'
 
 
 //RENDERIZAR LAS VIEWS
@@ -15,6 +16,7 @@ function App() {
         <>
           <Routes>
               <Route path='/' element={<Login />} />
+              <Route path="/officers/:id" element={<Profile />} />
           </Routes>
         </>
       </div>

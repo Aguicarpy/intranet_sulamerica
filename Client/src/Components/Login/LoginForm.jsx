@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { login_officer } from "../../Redux/actions";
 import { useNavigate } from 'react-router-dom';
@@ -47,6 +47,13 @@ const LoginForm = () => {
         console.error("Error en el inicio de sesión:", error);
       });
   }
+  // useEffect(() => {
+  //   // Verifica si el usuario ya está autenticado
+  //   const authToken = localStorage.getItem("userAuth");
+  //   if (authToken) {
+  //     navigate("/inicio"); // Redirige al inicio si el usuario ya está autenticado
+  //   }
+  // }, [navigate]);
 
   return (
     <div className={styles.containerLogin}>    

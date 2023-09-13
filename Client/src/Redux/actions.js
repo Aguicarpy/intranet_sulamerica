@@ -3,7 +3,8 @@ const URL_BASE = 'http://localhost:3015';
 export const POST_OFFICER = "POST_OFFICER"
 export const LOG_USER = "LOG_USER"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
-export const GET_DATA = "GET_DATA"
+export const GET_DATA = "GET_DATA" 
+export const GET_USER_PROFILE = "GET_USER_PROFILE"
 
 export const login_success = (dataUser) => {
     return {
@@ -38,6 +39,20 @@ export const login_officer = (email, password) => {
         }  
     }
 }
+
+export const getUserProfile = (id) => {
+    return async function (dispatch) {
+      try {
+        const response = await axios.get(`${URL_BASE}/officers/${id}`);
+        return dispatch({
+          type: GET_USER_PROFILE,
+          payload: response.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
 
 
 
