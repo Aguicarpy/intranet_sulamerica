@@ -1,7 +1,7 @@
 const postNewOfficer = require('../controllers/officers/postOfficer')
 const getAllOfficers = require('../controllers/officers/getAllOfficers')
 const getOfficerByName = require('../controllers/officers/getOfficerByName')
-const getOfficerById = require('../controllers/officers/getOfficerById')
+const getOneOfficerData = require('../controllers/officers/getOneOfficerData')
 const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 
@@ -41,11 +41,11 @@ const getOfficerData = async(req,res) => {
     }
 }
 
-const getOfficerDataById = async(req, res) =>{
-    const {id} = req.params
+const getOfficerDataLogged = async(req, res) =>{
+    const {email} = req.query
     try {
-        const getDataById = await getOfficerById(id)
-        return getDataById ? res.status(200).json(getDataById) : res.status(404).send('Funcionario no identificado')
+        const getData = await getOneOfficerData(email)
+        return getData ? res.status(200).json(getData) : res.status(404).send('Funcionario no identificado')
     } catch (error) {
         error.message = 'Error en el procedimiento'
         return res.status(500).json({ error: error.message })
@@ -78,4 +78,4 @@ const deleteOfficerData = async(req, res) => {
   }
 }
 
-module.exports = {postOfficer, getOfficerData, getOfficerDataById, updateOfficerData, deleteOfficerData}
+module.exports = {postOfficer, getOfficerData, getOfficerDataLogged, updateOfficerData, deleteOfficerData}

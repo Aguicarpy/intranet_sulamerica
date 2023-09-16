@@ -5,11 +5,12 @@ import './App.css'
 import {Routes , Route} from 'react-router-dom'
 import Login from './Views/Login/Login'
 import Home from './Views/Home/Home'
+import Profile from './Views/Profile/Profile'
 
 
 //RENDERIZAR LAS VIEWS
 function App() {
-
+  
   return (
     <>
       <div>
@@ -17,7 +18,7 @@ function App() {
           <Routes>
               <Route path='/' element={<Login />} />
               <Route path='/inicio' element={<Home />}></Route>
-              <Route path="/officers/:id" element={<Profile />} />
+              <Route path="/perfil/:id" element={<Profile />} />
           </Routes>
         </>
       </div>

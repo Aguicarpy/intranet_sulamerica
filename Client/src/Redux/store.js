@@ -1,13 +1,17 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import thunkMiddleWare from "redux-thunk";
-import reducer from "./reducer";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import rootReducer from "./reducer";
 
-//esto lo hacemos para poder conectar mi proyecto con la extension del navegador
-const composeEnhancer = window.REDUX_DEVTOOLS_EXTENSION_COMPOSE || compose;
+const persistConfig = {
+    key: "root",
+    storage,
+    whitelist: ["dataUser", "loginUser"],
+    // blacklist:["userLogedIn"]
+  };
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(
-  reducer,
-  composeEnhancer(applyMiddleware(thunkMiddleWare))
-); // esta linea sirve para poder hacer peticiones a una Api/servidor
 
-export default store;
+export const store = createStore(persistedReducer, applyMiddleware(thunk));
+export const persistor = persistStore(store);
