@@ -6,7 +6,9 @@ const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 
 const postOfficer = async(req,res) => {
+
     const {name, birthDay, phone, typeUser, email, position, password} = req.body
+
     try {
         if (!name || !birthDay || !phone || !typeUser || !email || !position || !password) {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
