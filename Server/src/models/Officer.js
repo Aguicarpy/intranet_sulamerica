@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
+    typeUser:{
+      type: DataTypes.ENUM('admin', 'rrhh', 'officer'),
+      allowNull: false
+    },
     phone:{
         type: DataTypes.INTEGER,
         allowNull: false,
