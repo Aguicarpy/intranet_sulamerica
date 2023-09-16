@@ -14,14 +14,6 @@ module.exports = (sequelize) => {
         state: {
             type: DataTypes.ENUM('cerrado', 'abierto'),
             defaultValue: 'abierto'
-        },
-        start:{
-            type: DataTypes.DATE,
-            allowNull:false,
-        },
-        end:{
-            type: DataTypes.DATE,
-            allowNull:false,
-        },
+        }
     })
 }
