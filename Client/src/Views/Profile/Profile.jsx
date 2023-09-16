@@ -1,17 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getUserProfile } from "../../Redux/actions"; // Importa la acción adecuada
+// import { getUserProfile } from "../../Redux/actions"; // Importa la acción adecuada
 import "./Profile.component.css";
 
 const Profile = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const userProfile = useSelector((state) => state.getUserProfile);
+  const userProfile = useSelector((state) => state.dataUser);
+  console.log(userProfile);
+  
+  const [userData, setUserData] = useState({
+    name: userProfile.name,
+    birthDay: userProfile.birthDay,
+    phone: userProfile.phone,
+    email: userProfile.email,
+    position: userProfile.position,
+    // email: userProfile.email,
+  })
 
-  useEffect(() => {
-    dispatch(getUserProfile(id));
-  }, [dispatch, id]);
+  // useEffect(() => {
+  //   dispatch(getUserProfile(id));
+  // }, [dispatch, id]);
 
   if (userProfile.loading) {
     return <div>Cargando...</div>;
@@ -21,7 +31,7 @@ const Profile = () => {
     return <div>Error: {userProfile.error}</div>;
   }
 
-  const { name, email, phone } = userProfile; // Accede a las propiedades del perfil
+  const { name, email, phone } = userData; // Accede a las propiedades del perfil
 
   return (
     <div className="container emp-profile">

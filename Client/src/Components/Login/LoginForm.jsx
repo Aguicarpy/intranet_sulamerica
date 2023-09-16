@@ -47,13 +47,13 @@ const LoginForm = () => {
         console.error("Error en el inicio de sesión:", error);
       });
   }
-  // useEffect(() => {
-  //   // Verifica si el usuario ya está autenticado
-  //   const authToken = localStorage.getItem("userAuth");
-  //   if (authToken) {
-  //     navigate("/inicio"); // Redirige al inicio si el usuario ya está autenticado
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    // Verifica si el usuario ya está autenticado
+    const authToken = localStorage.getItem("userAuth");
+    if (authToken) {
+      navigate("/inicio"); // Redirige al inicio si el usuario ya está autenticado
+    }
+  }, [navigate]);
 
   return (
     <div className={styles.containerLogin}>    

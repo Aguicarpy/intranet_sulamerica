@@ -5,6 +5,7 @@ export const LOG_USER = "LOG_USER"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const GET_DATA = "GET_DATA" 
 export const GET_USER_PROFILE = "GET_USER_PROFILE"
+export const USER_LOGOUT = "USER_LOGOUT"
 
 export const login_success = (dataUser) => {
     return {
@@ -17,7 +18,7 @@ export const login_officer = (email, password) => {
     return async function(dispatch) {
         try {
             const response = await axios.post(`${URL_BASE}/authAccess/login`, { email, password });
-            console.log(response);
+            // console.log(response);
             if(response.status === 200){
                 const loginUser = await response.data
                 localStorage.setItem('userAuth', JSON.stringify(loginUser))
@@ -25,7 +26,7 @@ export const login_officer = (email, password) => {
                 dispatch(dispatch(login_success(response.data.dataUser)))
             }
             //accede a la data segun el usuario logeado
-            const response_user = await axios.get(`${URL_BASE}/officers?email=${email}`)
+            const response_user = await axios.get(`${URL_BASE}/officers/userData?email=${email}`)
             dispatch({
                 type: GET_DATA,
                 payload: response_user.data,
@@ -39,20 +40,28 @@ export const login_officer = (email, password) => {
         }  
     }
 }
-
-export const getUserProfile = (id) => {
-    return async function (dispatch) {
-      try {
-        const response = await axios.get(`${URL_BASE}/officers/${id}`);
-        return dispatch({
-          type: GET_USER_PROFILE,
-          payload: response.data,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+export function logOutUser() {
+  localStorage.removeItem("userAuth"); //al cerrar la sesion elimina su almacenamiento
+  localStorage.setItem("userLoged", "false");
+    return {
+    type: USER_LOGOUT,
   };
+}
+
+// export const getUserProfile = (id) => {
+//   return async function (dispatch) {
+//     try {
+//       const response = await axios.get(`http://localhost:3015/officers/${id}`);
+//       console.log(response);
+//       return dispatch({
+//         type: GET_USER_PROFILE,
+//         payload: response.data,
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 
 
 
