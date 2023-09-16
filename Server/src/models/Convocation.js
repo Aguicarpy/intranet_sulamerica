@@ -1,11 +1,19 @@
 const { DataTypes} = require('sequelize')
 
 module.exports = (sequelize) => {
-    sequelize.define('Vacation',
+    sequelize.define('Convocation',
     {
-        workUnit: {
+        title:{
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        places: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        state: {
+            type: DataTypes.ENUM('cerrado', 'abierto'),
+            defaultValue: 'abierto'
         },
         start:{
             type: DataTypes.DATE,
@@ -15,6 +23,5 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull:false,
         },
-        //Reemplazante
     })
 }
