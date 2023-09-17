@@ -27,12 +27,13 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Officer, Position, Anniversary, Vacation} = sequelize.models;
+const { Officer, Position, Convocation} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
-Officer.hasOne(Anniversary, {foreignKey: 'officer_id', as: 'officer_anniversary'})
-Officer.hasMany(Vacation, {foreignKey: 'officer_id', as: 'officer_vacation'})
+// Officer.hasOne(Anniversary, {foreignKey: 'officer_id', as: 'officer_anniversary'})
+Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'creator'});
+Officer.hasMany(Convocation, {foreignKey: 'officer_id', as: 'convocations'})
 
 Position.belongsToMany(Officer, {through: 'officer_position'})
 
