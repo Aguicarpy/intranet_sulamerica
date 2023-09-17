@@ -1,17 +1,17 @@
 const postNewConvocation = require('../controllers/convocations/postNewConvocation')
 const getAllConvocations = require('../controllers/convocations/getAllConvocations')
+// const { Position } = require('../db')
 
 const handlerPostConvocation = async(req, res) => {
-    const {title, places, state} = req.body
+    const {title, places, state, position} = req.body
     try {
-        const createConvocation = await postNewConvocation(title, places, state)
+        const createConvocation = await postNewConvocation(title, places, state, position)
         return res.status(201).json({data: createConvocation});
     } catch (error) {
         error.message = 'Ocurrió un error inesperado al cargar la convocatoria'
         return res.status(500).json({ error: error.message })
     }
 }
-
 
 const handlerAllConvocations = async(req, res) => {
     try {
