@@ -31,16 +31,14 @@ const { Officer, Position, Convocation} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
-// Officer.hasOne(Anniversary, {foreignKey: 'officer_id', as: 'officer_anniversary'})
-Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'creator'});
-Officer.hasMany(Convocation, {foreignKey: 'officer_id', as: 'convocations'})
+Position.hasMany(Convocation, {foreignKey: 'position_id', as: 'positionAdmin'})
+Convocation.belongsTo(Position, {foreignKey: 'position_id', as: 'position'})
+// Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'creator'});
+// Officer.hasMany(Convocation, {foreignKey: 'officer_id', as: 'convocations'})
 
 Position.belongsToMany(Officer, {through: 'officer_position'})
 
-
-// Position.belongsToMany(Officer, {through: 'pessoa_cargo'})
-
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+  ...sequelize.models,
+  conection: sequelize,     
 };

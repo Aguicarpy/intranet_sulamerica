@@ -8,7 +8,7 @@ const postPosition = async (req, res) => {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
         }
         const newPosition = await postNewPosition(department, position, local, salary, shedule);
-        return res.status(201).json({ data: newPosition });
+        return res.status(201).json(newPosition);
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({ error: error.message });
