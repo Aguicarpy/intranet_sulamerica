@@ -5,7 +5,7 @@ const handlerPostConvocation = async(req, res) => {
     const {title, places, state} = req.body
     try {
         const createConvocation = await postNewConvocation(title, places, state)
-        return res.status(201).json({data: createConvocation})
+        return res.status(201).json({data: createConvocation});
     } catch (error) {
         error.message = 'Ocurrió un error inesperado al cargar la convocatoria'
         return res.status(500).json({ error: error.message })

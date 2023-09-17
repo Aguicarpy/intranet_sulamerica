@@ -32,7 +32,8 @@ const { Officer, Position, Convocation} = sequelize.models;
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
 // Officer.hasOne(Anniversary, {foreignKey: 'officer_id', as: 'officer_anniversary'})
-Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'postulante'});
+Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'creator'});
+Officer.hasMany(Convocation, {foreignKey: 'officer_id', as: 'convocations'})
 
 Position.belongsToMany(Officer, {through: 'officer_position'})
 
