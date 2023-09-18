@@ -1,6 +1,7 @@
-const postNewConvocation = require('../controllers/convocations/postNewConvocation')
-const getAllConvocations = require('../controllers/convocations/getAllConvocations')
-// const { Position } = require('../db')
+const postNewConvocation = require('../controllers/convocations/postNewConvocation');
+const getAllConvocations = require('../controllers/convocations/getAllConvocations');
+const postApplyJob = require('../controllers/convocations/postApplyJob');
+const getAllApplyJob = require('../controllers/convocations/getAllApplyJob');
 
 const handlerPostConvocation = async(req, res) => {
     const {title, places, state, position} = req.body
@@ -24,4 +25,26 @@ const handlerAllConvocations = async(req, res) => {
 }
 
 
-module.exports = { handlerPostConvocation, handlerAllConvocations }
+const handlerApplyJob = async(req, res) => {
+    const { officerId, convocationId } = req.body
+    try {
+        const sendApplicationJob = await postApplyJob(officerId, convocationId);
+        return res.status(201).json(sendApplicationJob)
+    } catch (error) {
+        return res.status(500).json({ error: 'Error al procesar la postulación' });
+    }
+}
+
+
+const handlerAllApplications = async(req, res) => {
+    try {
+        const allDataApplycations = await getAllApplyJob();
+        return res.status(200).json(allDataApplycations)
+    } catch (error) {
+        return res.status(500).json({ error: 'Error al acceder a las postulaciones' });  
+    }
+}
+
+
+
+module.exports = { handlerPostConvocation, handlerAllConvocations, handlerApplyJob, handlerAllApplications}
