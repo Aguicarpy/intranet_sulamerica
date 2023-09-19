@@ -5,7 +5,7 @@ import NavBar from "../../Components/Home/NavBar/NavBar";
 
 const Home = () => {
     return(
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <header>
                 <NavBar />
             </header>

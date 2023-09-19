@@ -6,6 +6,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const GET_DATA = "GET_DATA" 
 export const GET_USER_PROFILE = "GET_USER_PROFILE"
 export const USER_LOGOUT = "USER_LOGOUT"
+export const DATA_POSITION = "DATA_POSITION" 
 
 export const login_success = (dataUser) => {
     return {
@@ -47,6 +48,22 @@ export function logOutUser() {
     type: USER_LOGOUT,
   };
 }
+
+
+// export function allPositions(){
+//     return async function(dispatch){
+//         try {
+//             const response = await axios.get(`${URL_BASE}/positions`)
+//             // console.log(response.data);
+//             return dispatch({
+//                 type: DATA_POSITION,
+//                 payload: response.data
+//             })
+//         } catch (error) {
+//             throw new Error(error.message)
+//         }
+//     }
+// }
 
 // export const getUserProfile = (id) => {
 //   return async function (dispatch) {

@@ -1,13 +1,35 @@
 const { Officer, Position } = require('../../db')
 
-const postNewOfficer = async(name, birthDay, phone, typeUser, email, position, password) => {
-    const createOfficerData = await Officer.create({name, birthDay, phone, typeUser, email, password})
-    
-        const findPosition = await Position.findOne({
-            where: { position }
-        })
-        createOfficerData.addPosition(findPosition)
-    return createOfficerData
-}
+const postNewOfficer = async (name, birthDay, phone, typeUser, email, position, password) => {
+  try {
+    const [officer, created] = await Officer.findOrCreate({
+      where: { email },
+      defaults: {
+        name,
+        birthDay,
+        phone,
+        typeUser,
+        password,
+      },
+    });
+    // if(officer.email){
+    //     return 'Ya existe un funcionario asociado a ese email'
+    // }
+    if (created) {
+      const findPosition = await Position.findOne({
+        where: { position },
+      });
 
-module.exports = postNewOfficer
+      if (findPosition) {
+        await officer.addPosition(findPosition);
+      }
+    }
+
+    return officer;
+  } catch (error) {
+    console.error("Ocurrió un error al crear o buscar el usuario", error);
+    throw error;
+  }
+};
+
+module.exports = postNewOfficer;

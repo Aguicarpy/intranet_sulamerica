@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return(
-        <footer style={styles.footer}>
+        <footer className={styles.footer}>
             <div>
                 <ul>
                     <Link to='https://www.sulamerica.com.py'>

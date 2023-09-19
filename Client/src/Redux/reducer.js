@@ -2,13 +2,14 @@ import {
     LOGIN_SUCCESS,
     GET_DATA,
     GET_USER_PROFILE,
-    USER_LOGOUT
-    // Otras importaciones
+    USER_LOGOUT,
+    DATA_POSITION,
   } from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
   let initialState = {
     dataUser: {},
+    // dataPositions: {},
     // getUserProfile: {},
     loginUser: userLogedIn,
   };
@@ -39,6 +40,11 @@ import {
           loginUser: true,
           dataUser: action.payload,
         };
+      // case DATA_POSITION:
+      //   return {
+      //     ...state,
+      //     dataPositions: action.payload
+      //   }
       default:
         return {
           ...state,

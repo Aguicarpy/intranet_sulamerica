@@ -1,31 +1,64 @@
+/* NavBar.module.css */
+
 .navbar {
-  background-color: #ffffff;
-  color: #fff;
-  padding: 25px 0;
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
   text-align: center;
+  background-color: #f5f5f5; /* Color de fondo suave */
+  color: #000; /* Color del texto */
+  padding: 25px 25px;
+  align-items: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-.logo{
+/* .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 20px;
+} */
+
+.logo {
   width: 280px;
-  margin-right: 50px;
 }
-.navbar ul {
+
+.navList {
   list-style: none;
   padding: 0;
-  margin: 10px;
+  margin: 0;
+  display: flex;
+  gap: 20px;
 }
 
-.navbar li {
+.navList li {
   display: inline;
-  margin-right: 20px;
 }
 
-.navbar a {
+.navList a {
   color: #000000;
   text-decoration: none;
   font-weight: bold;
 }
 
-.navbar a:hover {
+.navList a:hover {
   text-decoration: underline;
+}
+
+.logoutButton {
+  background-color: #ff656c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 14px;
+  outline: none;
+}
+
+.loading {
+  margin-left: auto;
+  font-size: 14px;
 }

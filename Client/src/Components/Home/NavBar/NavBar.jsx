@@ -6,42 +6,35 @@ import { logOutUser } from "../../../Redux/actions"
 import { useEffect } from 'react';
 
 const NavBar = () => {
-    const userProfile = useSelector(state => state.dataUser);
-    const location = useLocation();
-    const dispatch = useDispatch()
-    const {id} = useParams()
-    
-    // const {id} = useParams()
-    console.log(userProfile);
-    const HandleLogOut = (e)=>{
-        e.preventDefault();
-        dispatch(logOutUser())
-        window.location.href = "/"
-      }
-    // useEffect(()=>{
-    //     dispatch(getUserProfile(id))
-    // },[id])
-    // Verificar si el usuario está autenticado y si tiene un ID válido en su perfil
-    // if (userProfile && userProfile.id) {
-    //     const userId = userProfile.id;
+  const userProfile = useSelector((state) => state.dataUser);
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-        return (
-            <div className={styles.navbar}>
-                <img src={logo} className={styles.logo} alt="Logo"></img>
-                <ul>
-                    <li><a href="/">PÁGINA PRINCIPAL</a></li>
-                    <Link to={`/perfil/${userProfile.id}`}>
-                        <li>ÁREA PERSONAL</li>
-                    </Link>
-                    <li><a href="/postulaciones">CONVOCATORIAS</a></li>
-                </ul>
-                <button onClick={HandleLogOut}>SALIR</button>
-            </div>
-        );
-    // } else {
-    //     // Si no se encuentra información del usuario, puedes mostrar un mensaje de carga o manejarlo según tu lógica
-    //     return <div>Cargando...</div>;
-    // }
+  const handleLogOut = () => {
+    dispatch(logOutUser());
+    window.location.href = '/';
+  };
+
+  return (
+  <div className={styles.navbar}>
+  <img src={logo} className={styles.logo} alt="Logo" />
+  <ul className={styles.navList}>
+    <li>
+      <Link to="/inicio">PÁGINA PRINCIPAL</Link>
+    </li>
+
+    {userProfile && userProfile.id && (
+    <li>
+      <Link to={`/perfil/${userProfile.id}`}>ÁREA PERSONAL</Link>
+    </li>
+    )}
+    <li>
+      <a href="/postulaciones">CONVOCATORIAS</a>
+      </li>
+    </ul>
+    <button className={styles.logoutButton} onClick={handleLogOut}>SALIR</button>
+    </div>
+    )
 };
 
 export default NavBar;
