@@ -1,14 +1,18 @@
-main {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    font-size: 18px;
-  }
-  
+/* Content.module.css */
+
+.main {
+  flex-grow: 1; /* Permite que el contenido ocupe todo el espacio disponible */
+  padding: 20px;
+  text-align: center;
+  background-color: #ffffff; /* Cambia el color de fondo según tu preferencia */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+}

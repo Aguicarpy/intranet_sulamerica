@@ -1,11 +1,12 @@
-const {Officer} = require('../../db')
+const getAllOfficers = require('./getAllOfficers')
 
 const getOneOfficerData = async(email) => {
     try {
-        const user = await Officer.findOne({ where:{ email: email}})
-        return user;
+        const dataOfficers = await getAllOfficers(email)
+        const getData = await dataOfficers.find((officer) => officer.email === email)
+    return getData
     } catch (error) {
-        throw new Error(error.message);
+        throw error
     }
 }
 

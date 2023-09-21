@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-// import { getUserProfile } from "../../Redux/actions"; // Importa la acción adecuada
-import "./Profile.component.css";
+import { UserProfile } from "../../Components/Profile/UserProfile";
+import  NavBar from "../../Components/Home/NavBar/NavBar"
 
 const Profile = () => {
   const { id } = useParams();
@@ -216,7 +213,7 @@ const Profile = () => {
         </div>
       </form>
     </div>
-  );
+  )
 };
 
 export default Profile;

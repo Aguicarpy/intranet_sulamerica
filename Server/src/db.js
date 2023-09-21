@@ -27,20 +27,19 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Officer, Position, Convocation} = sequelize.models;
+const { Officer, Position, Convocation, ApplyWork} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
-// Officer.hasOne(Anniversary, {foreignKey: 'officer_id', as: 'officer_anniversary'})
-Convocation.belongsTo(Officer, { foreignKey: 'officer_id',as: 'creator'});
-Officer.hasMany(Convocation, {foreignKey: 'officer_id', as: 'convocations'})
+Position.hasMany(Convocation, {foreignKey: 'position_id', as: 'positionAdmin'})
+Convocation.belongsTo(Position, {foreignKey: 'position_id', as: 'position'})
+Officer.belongsToMany(Convocation, { through: ApplyWork, foreignKey: 'officer_id' });
+Convocation.belongsToMany(Officer, { through: ApplyWork, foreignKey: 'convocation_id'});
+// ApplyWork.hasOne(Officer, {as: 'officer'})
 
 Position.belongsToMany(Officer, {through: 'officer_position'})
 
-
-// Position.belongsToMany(Officer, {through: 'pessoa_cargo'})
-
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+  ...sequelize.models,
+  connection: sequelize,     
 };
