@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllConvocations } from "../../Redux/actions";
+
+import { getAllConvocations } from "../../Redux/Actions";
+
 import "./../Convocations/Convocations.less";
 
 function Card() {
@@ -71,4 +73,6 @@ function Card() {
   );
 }
 
+
 export default Card;
+

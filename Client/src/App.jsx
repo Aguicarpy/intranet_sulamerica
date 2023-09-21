@@ -1,12 +1,10 @@
-import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import './App.css'
 import {Routes , Route} from 'react-router-dom'
 import Login from './Views/Login/Login'
 import Home from './Views/Home/Home'
 import Profile from './Views/Profile/Profile'
-import { Convocations } from './Components/Convocations/Convocations.jsx'
+import DashboardAdmin from './Components/Dashboard/DashboardAdmin'
+import { Convocations } from './Components/Convocations/Convocations'
 
 
 //RENDERIZAR LAS VIEWS
@@ -21,6 +19,8 @@ function App() {
               <Route path='/inicio' element={<Home />}></Route>
               <Route path="/perfil/:id" element={<Profile />} />
               <Route path="/postulaciones" element={<Convocations />} />
+              <Route path="/admin-dashboard" element={<DashboardAdmin />} />
+
           </Routes>
         </>
       </div>

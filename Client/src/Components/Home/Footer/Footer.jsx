@@ -12,7 +12,7 @@ const Footer = () => {
                     <li><a href="/perfil"></a></li>
                 </ul>
             </div>
-            <p>Derechos de autor © 2023 Tu Empresa</p>
+            <p>Intranet Sul América © 2023</p>
         </footer>
     )
 }

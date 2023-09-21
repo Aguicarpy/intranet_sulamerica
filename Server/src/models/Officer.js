@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
       defaultValue: true
     },
     typeUser:{
-      type: DataTypes.ENUM('admin', 'rrhh', 'officer'),
+      type: DataTypes.ENUM('Admin', 'Officer'),
       allowNull: false
     },
     phone:{

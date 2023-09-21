@@ -1,13 +1,14 @@
 const { Officer } = require('../../db')
 
 const deleteOfficer = async(id) => {
-    const officerData = await Officer.findByPk(id);
-	if(!officerData){
-		throw new Error('Funcionario no encontrado');
-	}
+    const officerData = await Officer.findOne({ where: { id } });
 
-	await officerData.destroy()
-	return 'Datos del funcionario fue eliminada con éxito'
+	if(officerData){
+		const userDeleted = await Officer.destroy({ where: { id } })
+		return userDeleted
+	} else {
+		return 'Funcionario no encontrado'
+	}
 }
 
 module.exports = deleteOfficer;
