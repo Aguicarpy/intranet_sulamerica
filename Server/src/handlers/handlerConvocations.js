@@ -16,7 +16,7 @@ const handlerPostConvocation = async(req, res) => {
 const handlerAllConvocations = async(req, res) => {
     try {
         const allDataConvocation = await getAllConvocations();
-        return res.status(200).json({data: allDataConvocation})
+        return res.status(200).json(allDataConvocation)
     } catch (error) {
         error.message = 'Ocurrió un error inesperado al acceder a los datos'
         return res.status(500).json({ error: error.message })

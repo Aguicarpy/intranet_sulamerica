@@ -9,7 +9,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
   console.log(userProfile);
-  
+
   const [userData, setUserData] = useState({
     name: userProfile.name,
     birthDay: userProfile.birthDay,
@@ -17,7 +17,7 @@ const Profile = () => {
     email: userProfile.email,
     position: userProfile.position,
     // email: userProfile.email,
-  })
+  });
 
   // useEffect(() => {
   //   dispatch(getUserProfile(id));
