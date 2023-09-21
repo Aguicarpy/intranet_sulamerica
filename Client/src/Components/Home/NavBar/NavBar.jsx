@@ -2,7 +2,7 @@ import styles from './NavBar.module.css';
 import logo from '../../../assets/logoSulAmerica.png';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { logOutUser } from "../../../Redux/actions"
+import { logOutUser } from "../../../Redux/Actions"
 import { useEffect } from 'react';
 
 const NavBar = () => {
@@ -29,8 +29,11 @@ const NavBar = () => {
     </li>
     )}
     <li>
-      <a href="/postulaciones">CONVOCATORIAS</a>
-      </li>
+    <Link to='/postulaciones'>CONVOCATORIAS</Link>
+    </li>
+    <li>
+    <Link to='/admin-dashboard'>REGISTRO</Link>
+    </li>
     </ul>
     <button className={styles.logoutButton} onClick={handleLogOut}>SALIR</button>
     </div>

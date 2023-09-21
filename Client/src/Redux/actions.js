@@ -6,7 +6,12 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const GET_DATA = "GET_DATA" 
 export const GET_USER_PROFILE = "GET_USER_PROFILE"
 export const USER_LOGOUT = "USER_LOGOUT"
-export const DATA_POSITION = "DATA_POSITION" 
+export const DATA_POSITION = "DATA_POSITION"
+export const GET_ALL_USERS = "GET_ALL_USERS"
+export const DELETE_USER = "DELETE_USER"
+export const CHANGE_USER_TYPE = "CHANGE_USER_TYPE"
+export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
+export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
 
 export const login_success = (dataUser) => {
     return {
@@ -49,6 +54,77 @@ export function logOutUser() {
   };
 }
 
+export function getAllUsers() {
+    return async function (dispatch) {
+      try {
+        const response = await axios.get(`${URL_BASE}/officers`);
+        return dispatch({
+          type: GET_ALL_USERS,
+          payload: response.data,
+        });
+      } catch (error) {
+        return error.message;
+      }
+    };
+  }
+
+export function deleteUser(id) {
+  return async function (dispatch) {
+    try {
+      const response = await axios.delete(`${URL_BASE}/officers/userDelete?id=${id}`);
+      if (response.status === 200) {
+        return dispatch({
+          type: DELETE_USER,
+          payload: response.data,
+        });
+      } else {
+        return dispatch({
+          type: DELETE_USER,
+          payload: "Ocurrio un problema",
+        });
+      }
+    } catch (error) {
+      return error.message;
+    }
+  };
+}
+
+export function changeUserType(id) {
+    return async function (dispatch) {
+      try {
+        const response = await axios.put(`${URL_BASE}/officers/changetype`, { id });
+        console.log(response);
+        if (response.status === 200) {
+          return dispatch({
+            type: CHANGE_USER_TYPE,
+            payload: "Tipo de usuario cambiado",
+          });
+        } else {
+          return dispatch({
+            type: CHANGE_USER_TYPE,
+            payload: "Error al cambiar tipo de usuario",
+          });
+        }
+      } catch (error) {
+        return error.message;
+      }
+    };
+  }
+
+  export const getAllConvocations = () => {
+    return async function (dispatch) {
+      try {
+        const response = await axios.get(`${URL_BASE}/convocations`);
+        // console.log(response.data);
+        return dispatch({
+          type: GET_CONVOCATIONS,
+          payload: response.data.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
 
 // export function allPositions(){
 //     return async function(dispatch){
@@ -95,3 +171,9 @@ export function logOutUser() {
 //         }
 //       };
 // }
+
+export function clearAlerts() {
+    return {
+      type: CLEAR_ALERTS_STATE,
+    };
+  }

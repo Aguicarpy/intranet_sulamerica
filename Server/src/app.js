@@ -1,11 +1,13 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const morgan = require('morgan');
 const routes = require('./routes/index');
 require('./db');
 
 const server = express();
+server.use(cors());
 
 server.name = 'JAGUARE API';
 

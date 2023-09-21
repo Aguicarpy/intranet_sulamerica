@@ -4,6 +4,7 @@ const getOfficerByName = require('../controllers/officers/getOfficerByName')
 const getOneOfficerData = require('../controllers/officers/getOneOfficerData')
 const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
+const setTypeUser = require('../controllers/officers/setTypeUser')
 
 const postOfficer = async(req,res) => {
 
@@ -53,14 +54,14 @@ const getOfficerDataLogged = async(req, res) =>{
 }
 
 const updateOfficerData = async(req,res) => {
-    const id = req.params.id;
-    const {name, birthDay, phone, email, position} = req.body;
+    let {name, birthDay, phone, email, DBpassword, userActualPassword, userNewPassword} = req.body;
     try {
-        if(!name || !birthDay || !phone || !email || !position){
-            return res.status(404).json({error: 'Alguno de los campos está vacio, debe rellenar todos los campos para actualizar los datos!'});
+        if(!email){
+            return res.status(400).json({ error: "Ingrese el Email" });
+        } else {
+            let updateData = await modifyOfficer(name, birthDay, phone, email, DBpassword, userActualPassword, userNewPassword);
+            return res.status(200).json(updateData);
         }
-        const updateDataById = await modifyOfficer(id, name, birthDay, phone, email, position);
-        return res.status(200).json(updateDataById);
     } catch (error) {
         error.message = 'Ocurrió un error inesperado al actualizar los datos'
         return res.status(500).json({ error: error.message })
@@ -68,14 +69,31 @@ const updateOfficerData = async(req,res) => {
 }
 
 const deleteOfficerData = async(req, res) => {
-    const id = req.params.id;
-  try {
-    const officerDeleted = await deleteOfficer(id);
-    return res.status(200).json(officerDeleted);
-  } catch (error) {
-    error.message = "Ocurrió un error al eliminar los datos del funcionario"
-    return res.status(500).json({ error: error.message });
-  }
+    const { id } = req.query;
+    try {
+      if (!id) {
+        return res.status(400).json("Ingrese un id");
+      }
+      const user = await deleteOfficer(id);
+      if (user === 1) {
+        return res.status(200).json(`Usuario eliminado`);
+      } else {
+        return res.status(400).json("Eliminacion fallida");
+      }
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
 }
 
-module.exports = {postOfficer, getOfficerData, getOfficerDataLogged, updateOfficerData, deleteOfficerData}
+const handlerSetTypeUser = async (req, res) => {
+    const { id } = req.body;
+    try {
+      const adminUser = await setTypeUser(id);
+      return res.status(200).json(adminUser);
+    } catch (error) {
+      console.error("Ocurrió un error al actualizar el tipo de usuario");
+      return res.status(500).json({ error: error.message });
+    }
+  };
+
+module.exports = {postOfficer, getOfficerData, getOfficerDataLogged, updateOfficerData, deleteOfficerData, handlerSetTypeUser}
