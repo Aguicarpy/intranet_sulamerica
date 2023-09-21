@@ -1,0 +1,205 @@
+@white: #ffffff;
+@lightBG: #dce1df;
+@salmon: #ff6666;
+
+@teal: #0096a0;
+@tealMid: #0ebac7;
+@tealContrast: #33ffff;
+@tealShade: #007c85;
+
+@darkGrey: #4f585e;
+
+// Variables de estilo
+@zindex: 10;
+
+// Estilos generales del cuerpo y botones
+body {
+  background: @lightBG;
+  color: @darkGrey;
+  font-family: "Source Sans Pro", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+a.btn {
+  background: @teal;
+  border-radius: 4px;
+  box-shadow: 0 2px 0px 0 rgba(0, 0, 0, 0.25);
+  color: @white;
+  display: inline-block;
+  padding: 6px 30px 8px;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.1s ease;
+
+  &:hover {
+    background: lighten(@teal, 2.5);
+    box-shadow: 0px 8px 2px 0 rgba(0, 0, 0, 0.075);
+    transform: translateY(-2px);
+    transition: all 0.25s ease;
+  }
+
+  &:active {
+    background: darken(@teal, 2.5);
+    box-shadow: 0 1px 0px 0 rgba(255, 255, 255, 0.25);
+    transform: translate3d(0, 1px, 0);
+    transition: all 0.025s ease;
+  }
+}
+
+div.cards {
+  margin: 80px auto;
+  max-width: 960px;
+  text-align: center;
+}
+
+// Definición de estilos de tarjeta
+.card {
+  background: @white;
+  display: inline-block;
+  margin: 8px;
+  max-width: 300px;
+  perspective: 1000;
+  position: relative;
+  text-align: left;
+  transition: all 0.3s ease;
+  width: 300px;
+  z-index: 1;
+
+  img {
+    max-width: 300px;
+  }
+
+  .card__image-holder {
+    background: rgba(0, 0, 0, 0.1);
+    height: 0;
+    padding-bottom: 75%;
+  }
+
+  div.card-title {
+    background: @white;
+    padding: 6px 15px 10px;
+    position: relative;
+    z-index: 0;
+
+    a.toggle-info {
+      border-radius: 32px;
+      height: 32px;
+      padding: 0;
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      width: 32px;
+
+      span {
+        background: @white;
+        display: block;
+        height: 2px;
+        position: absolute;
+        top: 16px;
+        transition: all 0.15s ease-out;
+        width: 12px;
+      }
+
+      span.left {
+        right: 14px;
+        transform: rotate(45deg);
+      }
+
+      span.right {
+        left: 14px;
+        transform: rotate(-45deg);
+      }
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin: 0;
+      padding: 0;
+
+      small {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+      }
+    }
+  }
+
+  div.card-description {
+    position: relative;
+    font-size: 14px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+
+    &.show {
+      max-height: 300px; /* Altura máxima cuando se muestra */
+      padding: 10px 15px 10px; /* Ajusta el relleno deseado */
+    }
+  }
+
+  div.card-actions {
+    box-shadow: 0 2px 0px 0 rgba(0, 0, 0, 0.075);
+    padding: 10px 15px 20px;
+    text-align: center;
+  }
+
+  div.card-flap {
+    background: darken(@white, 15);
+    position: absolute;
+    width: 100%;
+    transform-origin: top;
+    transform: rotateX(-90deg);
+    transition: all 0.3s ease;
+  }
+
+  div.flap1 {
+    z-index: -1;
+  }
+
+  div.flap2 {
+    z-index: -2;
+  }
+
+  &:hover {
+    opacity: 0.94;
+    transform: scale(0.92);
+  }
+
+  &.show {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+
+    .card-title {
+      .toggle-info {
+        background: @salmon !important;
+        span {
+          top: 15px;
+        }
+
+        span.left {
+          right: 10px;
+        }
+
+        span.right {
+          left: 10px;
+        }
+      }
+    }
+
+    .card-flap {
+      background: @white;
+      transform: rotateX(0deg);
+    }
+
+    .flap1 {
+      transition: all 0.3s 0s ease-out;
+    }
+
+    .flap2 {
+      transition: all 0.3s 0.2s ease-out;
+    }
+  }
+}
