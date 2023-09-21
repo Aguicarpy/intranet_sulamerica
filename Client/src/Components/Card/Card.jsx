@@ -5,6 +5,7 @@ import "./../Convocations/Convocations.less";
 
 function Card() {
   const convocations = useSelector((state) => state.getConvocations);
+  console.log(convocations);
   const dispatch = useDispatch();
   const [expandedCard, setExpandedCard] = useState(null);
 
@@ -32,7 +33,7 @@ function Card() {
           <div className="card__image-holder">
             <img
               className="card__image"
-              src="https://source.unsplash.com/300x225/?wave"
+              src="https://uploads-ssl.webflow.com/60f1d0291913c15fb8cd0d89/60f1d0291913c1839ccd0ecc_office-block.png"
               alt="wave"
             />
           </div>
@@ -51,8 +52,13 @@ function Card() {
               expandedCard === index ? "show" : ""
             }`}
           >
-            This grid is an attempt to make something nice that works on touch
-            devices. Ignoring hover states when they're not available etc.
+            {/* <ul> */}
+              <p>{convocation.position.department}</p>
+              <p>{convocation.position.position}</p>
+              <p>{convocation.position.salary}</p>
+              <p>{convocation.position.shedule}</p>
+
+            {/* </ul> */}
           </div>
           <div className="card-actions">
             <a href="#" className="btn">
