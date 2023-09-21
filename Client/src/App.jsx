@@ -6,6 +6,7 @@ import Profile from './Views/Profile/Profile'
 import DashboardAdmin from './Components/Dashboard/DashboardAdmin'
 import { Convocations } from './Components/Convocations/Convocations'
 
+
 //RENDERIZAR LAS VIEWS
 function App() {
   
@@ -19,6 +20,7 @@ function App() {
               <Route path="/perfil/:id" element={<Profile />} />
               <Route path="/postulaciones" element={<Convocations />} />
               <Route path="/admin-dashboard" element={<DashboardAdmin />} />
+
           </Routes>
         </>
       </div>
