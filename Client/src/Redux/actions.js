@@ -121,10 +121,10 @@ export function changeUserType(id) {
     return async function (dispatch) {
       try {
         const response = await axios.get(`${URL_BASE}/convocations`);
-        // console.log(response.data);
+        console.log(response.data);
         return dispatch({
           type: GET_CONVOCATIONS,
-          payload: response.data.data,
+          payload: response.data,
         });
       } catch (error) {
         console.log(error);

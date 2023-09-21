@@ -1,11 +1,14 @@
 import { UserProfile } from "../../Components/Profile/UserProfile";
 import  NavBar from "../../Components/Home/NavBar/NavBar"
-
+import Footer from "../../Components/Home/Footer/Footer"
+import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 const Profile = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
-  console.log(userProfile);
 
   const [userData, setUserData] = useState({
     name: userProfile.name,
@@ -31,6 +34,10 @@ const Profile = () => {
   const { name, email, phone } = userData; // Accede a las propiedades del perfil
 
   return (
+    <>
+    <div>
+      <NavBar></NavBar>
+    </div>
     <div className="container emp-profile">
       <form method="post">
         <div class="row">
@@ -213,6 +220,10 @@ const Profile = () => {
         </div>
       </form>
     </div>
+    <div>
+      <Footer></Footer>
+    </div>
+    </>
   )
 };
 
