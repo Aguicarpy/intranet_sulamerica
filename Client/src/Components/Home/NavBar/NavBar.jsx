@@ -2,7 +2,7 @@ import styles from './NavBar.module.css';
 import logo from '../../../assets/logoSulAmerica.png';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { logOutUser } from "../../../Redux/actions"
+import { logOutUser } from "../../../Redux/Actions"
 import { useEffect } from 'react';
 
 const NavBar = () => {
