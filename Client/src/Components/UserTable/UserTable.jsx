@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserType, clearAlerts, deleteUser } from '../../Redux/Actions';
+import { changeUserType, clearAlerts, deleteUser } from '../../Redux/actions';
 import { NavLink } from 'react-router-dom';
 import styles from './UserTable.module.css'
 import { ToastContainer, toast } from 'react-toastify';
