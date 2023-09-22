@@ -7,16 +7,18 @@ export const UserProfile = () => {
     const { id } = useParams();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
-
-  console.log(userProfile);
+  console.log(userProfile.Positions);
 //   console.log(dataPosition);
-  
+  const dataPosition = userProfile.Positions.map((cargo) => cargo.position)
+  const dataDepartment = userProfile.Positions.map((cargo) => cargo.department)
+  // console.log(dataPosition);
   const [userData, setUserData] = useState({
     name: userProfile.name,
     birthDay: userProfile.birthDay,
     phone: userProfile.phone,
     email: userProfile.email,
-    position: userProfile.Positions[0].position
+    position: dataPosition,
+    department: dataDepartment
   })
 
 //   console.log(userData);
@@ -33,7 +35,7 @@ export const UserProfile = () => {
     return <div>Error: {userProfile.error}</div>;
   }
 
-  const { name, email, phone, position } = userData; // Accede a las propiedades del perfil
+  const { name, email, phone, position, department } = userData; // Accede a las propiedades del perfil
 //   console.log(userData);
   return (
     <div className="container emp-profile">
@@ -53,7 +55,7 @@ export const UserProfile = () => {
           </div>
           <div class="col-md-6">
             <div class="profile-head">
-              <h5>{name}</h5>
+              <h5>Bienvenido/a {name}</h5>
               {/* <h6>Web Developer and Designer</h6> */}
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -74,7 +76,7 @@ export const UserProfile = () => {
                     class="nav-link"
                     id="profile-tab"
                     data-toggle="tab"
-                    href="#profile"                 <========= Puedo agregar para poner apartados extras
+                    href="#profile"                 
                     role="tab"
                     aria-controls="profile"
                     aria-selected="false"
@@ -82,7 +84,48 @@ export const UserProfile = () => {
                     Timeline
                   </a>
                 </li> */}
+                
               </ul>
+              <div class="row">
+                  <div class="col-md-6">
+                    <label>Nombre</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{name}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Email</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{email}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Teléfono</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{phone}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Profesión</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{position}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Área</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{department}</p>
+                  </div>
+                </div>
             </div>
           </div>
           <div class="col-md-2">
@@ -125,7 +168,7 @@ export const UserProfile = () => {
                                                 <p>Kshiti123</p>
                                             </div> */}
                 </div>
-                <div class="row">
+                {/* <div class="row">
                   <div class="col-md-6">
                     <label>Nombre</label>
                   </div>
@@ -157,6 +200,14 @@ export const UserProfile = () => {
                     <p>{position}</p>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Área</label>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{department}</p>
+                  </div>
+                </div> */}
               </div>
               {/* <div
                 class="tab-pane fade"

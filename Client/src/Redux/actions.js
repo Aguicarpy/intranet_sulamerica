@@ -183,4 +183,4 @@ export function clearAlerts() {
     return {
       type: CLEAR_ALERTS_STATE,
     };
-  }
+}
