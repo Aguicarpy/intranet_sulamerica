@@ -6,15 +6,15 @@ import NavBar from "../../Components/Home/NavBar/NavBar";
 const Home = () => {
     return(
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            <header>
+            {/* <header>
                 <NavBar />
-            </header>
+            </header> */}
             <main>
                 <Content />
             </main>
-            <footer>
+            {/* <footer>
                 <Footer />
-            </footer>
+            </footer> */}
         </div>
     )
 }

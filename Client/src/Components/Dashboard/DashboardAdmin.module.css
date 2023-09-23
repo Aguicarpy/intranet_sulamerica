@@ -1,66 +1,57 @@
 /* DashboardAdmin.module.css */
 
 .page {
-    background-color: #f2f2f2;
-    font-family: Arial, sans-serif;
-  }
-  
-  .container {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-bottom: 20px;
-  }
+  /* background-color: #f2f2f2; */
+  font-family: Arial, sans-serif;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Divide el contenido en tres filas: header, main y footer */
+  min-height: 100vh; /* Asegura que la página ocupe al menos la altura de la ventana */
+}
 
-  .navbar {
-    margin-bottom: 25px; 
-  }
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  
+  margin: 20px auto; /* Centro el container horizontalmente */
+}
 
-  .footer {
-    margin-bottom: 25px; 
-  }
-  
-  .titulo {
-    display: flex;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #84232b; /* Rojo personalizado para tu empresa */
-    margin-bottom: 20px;
-  }
-  
-  .botones {
-    margin-bottom: 20px;
-  }
-  
-  .buttonSelect {
-    background-color: #84232b; /* Rojo personalizado para tu empresa */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .buttonSelect:hover {
-    background-color: #f100009a; /* Cambio de tono de rojo al pasar el mouse */
-  }
-  
-  .table {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-top: 20px;
-  }
-  
-  /* Agrega estilos específicos para el logo de la empresa si es necesario */
-  
-  
+.titulo {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #84232b;
+  margin-bottom: 20px;
+}
+
+.botones {
+  margin-bottom: 20px;
+}
+
+.buttonSelect {
+  background-color: #84232b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.buttonSelect:hover {
+  background-color: #f100009a;
+}
+
+.table {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
