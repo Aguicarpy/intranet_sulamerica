@@ -57,8 +57,8 @@ function UserTable({ users, onUserDelete,onUpdateUser }) {
                       {users.map((user, index) => (
                         <tr key={user.id}>
                           <td>{index + 1}</td>
-                          <td className={styles.typecell}>{user.name}</td>
                           <td className={styles.typecell}>{user.id}</td>
+                          <td className={styles.typecell}>{user.name}</td>
                           <td className={styles.typecell}>{user.email}</td>
                           {/* <td>{user.lastName}</td> */}
                           <td className={styles.typecell}>{user.birthDay}</td>
