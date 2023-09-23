@@ -1,7 +1,9 @@
 import { useSelector, useDispatch} from 'react-redux';
 import { useEffect,useState } from 'react';
 import NavBar from '../Home/NavBar/NavBar'
+
 import Footer from '../Home/Footer/Footer'
+
 import { getAllUsers } from '../../Redux/actions';
 import UserTable from '../UserTable/UserTable';
 import styles from './DashboardAdmin.module.css'
@@ -80,9 +82,9 @@ const DashboardAdmin = () =>{
 
     return(
         <div className={styles.page}>
-        <div className={styles.navbar}>
+        {/* <div className={styles.navbar}>
             <NavBar/> 
-        </div>
+        </div> */}
         <div className={styles.container}>
         <p className={styles.titulo}>DASHBOARD DE RRHH</p>
         <Row   md={3} className={styles.botones}>
@@ -132,9 +134,6 @@ const DashboardAdmin = () =>{
              </Row>
          } */}
         </div>
-        </div>
-        <div className={styles.footer}>
-            <Footer/>
         </div>
     </div>
     )

@@ -35,9 +35,9 @@ const Profile = () => {
 
   return (
     <div>
-      <NavBar></NavBar>
+      {/* <NavBar></NavBar> */}
       <UserProfile></UserProfile>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   )
 };

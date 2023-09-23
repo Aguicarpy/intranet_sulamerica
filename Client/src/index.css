@@ -3,7 +3,8 @@ body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-    background-color: #FFFDF6;
+  background-color: #FFFDF6;
+  overflow-y: scroll;
 }
 
 code {

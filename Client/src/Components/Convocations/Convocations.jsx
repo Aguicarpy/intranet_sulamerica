@@ -7,9 +7,9 @@ export const Convocations = () => {
   return (
     <div>
 
-        <NavBar></NavBar>
+        {/* <NavBar></NavBar> */}
         <Cards></Cards>
-        <Footer></Footer>
+        {/* <Footer></Footer>  */}
     </div>
   );
 };
