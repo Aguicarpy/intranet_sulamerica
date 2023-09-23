@@ -1,5 +1,5 @@
 import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, GET_ALL_USERS,
-  DELETE_USER, CHANGE_USER_TYPE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,} from './Actions';
+  DELETE_USER, CHANGE_USER_TYPE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE} from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
   let initialState = {
@@ -7,9 +7,10 @@ import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, 
     allUsers: [],
     getConvocations: [],
     alerts: "",
-    // dataPositions: {},
+    dataPositions: [],
     // getUserProfile: {},
     loginUser: userLogedIn,
+    userCreated: false,
   };
   
 const rootReducer = (state = initialState, action) => {
@@ -63,18 +64,22 @@ const rootReducer = (state = initialState, action) => {
         // loginUser: true,
         getConvocations: action.payload,
       };
+      case POST_OFFICER_SUCCESS:
+      return {
+        ...state,
+        userCreated: true, //al ser creado con exito seteo en true el estado
+      };
+      case POST_OFFICER_FAILURE:
+      return {
+        ...state, // al haber error seteo en false el estado
+        userCreated: false,
+      };
 
-
-
-
-
-
-
-      // case DATA_POSITION:
-      //   return {
-      //     ...state,
-      //     dataPositions: action.payload
-      //   }
+      case DATA_POSITION:
+        return {
+          ...state,
+          dataPositions: action.payload
+        }
 
       case CLEAR_ALERTS_STATE: {
         return {

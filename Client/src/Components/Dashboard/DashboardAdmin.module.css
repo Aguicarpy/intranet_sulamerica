@@ -1,11 +1,16 @@
 /* DashboardAdmin.module.css */
 
 .page {
+
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+
   /* background-color: #f2f2f2; */
   font-family: Arial, sans-serif;
   display: grid;
   grid-template-rows: auto 1fr auto; /* Divide el contenido en tres filas: header, main y footer */
   min-height: 100vh; /* Asegura que la página ocupe al menos la altura de la ventana */
+
 }
 
 .container {
@@ -13,18 +18,34 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
+
+  max-width: 895px; /* Ancho máximo */
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 25px;
+}
+
+.footer {
+  margin-bottom: 25px;
+}
+
+
   width: 100%;
   max-width: 800px;
   
   margin: 20px auto; /* Centro el container horizontalmente */
 }
 
+
 .titulo {
   display: flex;
   justify-content: center;
   font-size: 24px;
   font-weight: bold;
-  color: #84232b;
+  color: #84232b; /* Rojo personalizado para tu empresa */
   margin-bottom: 20px;
 }
 
@@ -33,7 +54,8 @@
 }
 
 .buttonSelect {
-  background-color: #84232b;
+
+  background-color: #84232b; /* Rojo personalizado para tu empresa */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -45,7 +67,9 @@
 }
 
 .buttonSelect:hover {
-  background-color: #f100009a;
+
+  background-color: #f100009a; /* Cambio de tono de rojo al pasar el mouse */
+
 }
 
 .table {
@@ -53,5 +77,40 @@
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
+
+  
   margin-top: 20px;
 }
+
+.header {
+  display: flex;
+  align-items: center; /* Alinea verticalmente al centro */
+}
+
+.btnless {
+  display: flex;
+    position: relative;
+    margin-right: 10px;
+    left: 621px;
+    bottom: 8px;
+}
+
+/* Media queries para tamaños de pantalla específicos */
+
+/* Estilos para pantallas pequeñas (por ejemplo, teléfonos) */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px; /* Ajusta el espacio interior para pantallas pequeñas */
+  }
+
+  .btnless {
+    left: 10px; /* Ajusta el valor según tu diseño para pantallas pequeñas */
+  }
+}
+
+  
+  
+
+  margin-top: 20px;
+}
+

@@ -1,11 +1,15 @@
 import { useSelector, useDispatch} from 'react-redux';
 import { useEffect,useState } from 'react';
 import NavBar from '../Home/NavBar/NavBar'
+
+import Footer from '../Home/Footer/Footer'
+
 import { getAllUsers } from '../../Redux/actions';
 import UserTable from '../UserTable/UserTable';
 import styles from './DashboardAdmin.module.css'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { Link } from 'react-router-dom';
 
 const DashboardAdmin = () =>{
     const dispatch = useDispatch()
@@ -96,14 +100,19 @@ const DashboardAdmin = () =>{
         </Row>
         <div>
             {showUsers &&  
-            <Row  xs={1} md={1}>
-                  <Col>
-                    <div className={styles.table}>
-                      <p>FUNCIONARIOS</p>
-                      <UserTable  onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={users}/>
-                    </div>
-                  </Col>   
-            </Row>}
+            <Row xs={1} md={1}>
+            <Col>
+              <div className={styles.table}>
+                <div className={styles.header}>
+                  <p>FUNCIONARIOS</p>
+                  <Link to="/admin-new-officer">
+                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Success</button>
+                  </Link>
+                </div>
+                <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={users} />
+              </div>
+            </Col>
+          </Row>}
            {/* {showDonations && 
            <Row  xs={1} md={1}>
                 <Col>

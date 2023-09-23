@@ -12,6 +12,8 @@ export const DELETE_USER = "DELETE_USER"
 export const CHANGE_USER_TYPE = "CHANGE_USER_TYPE"
 export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
 export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
+export const POST_OFFICER_SUCCESS = "POST_OFFICER_SUCCESS";
+export const POST_OFFICER_FAILURE = "POST_OFFICER_FAILURE";
 
 export const login_success = (dataUser) => {
   return {
@@ -131,21 +133,47 @@ export function changeUserType(id) {
       }
     };
   };
+  
+  export function postOfficer(user) {
+    return async function (dispatch) {
+      try {
+        const response = await axios.post(`${URL_BASE}/officers`, user);
+  
+        // Si el servidor devuelve un código de estado 201 (creado), muestra el mensaje de éxito
+        if (response.status === 201) {
+          dispatch({
+            type: POST_OFFICER_SUCCESS, //para setear userCreated en true y redireccionar a la view login
+          });
+          window.alert(response.data.message); // Accedemos al mensaje en response.data
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          dispatch({
+            type: POST_OFFICER_FAILURE, // para setear userCreated en false y mantenerme en la view de registro
+          });
+          window.alert(error.response.data.error); // Muestra el mensaje personalizado del servidor en caso de un error 409
+        } else {
+          window.alert(error.message);
+        }
+      }
+    };
+  }
+  
 
-// export function allPositions(){
-//     return async function(dispatch){
-//         try {
-//             const response = await axios.get(`${URL_BASE}/positions`)
-//             // console.log(response.data);
-//             return dispatch({
-//                 type: DATA_POSITION,
-//                 payload: response.data
-//             })
-//         } catch (error) {
-//             throw new Error(error.message)
-//         }
-//     }
-// }
+export function allPositions(){
+    return async function(dispatch){
+        try {
+            const response = await axios.get(`${URL_BASE}/positions`)
+            // console.log(response.data);
+            return dispatch({
+                type: DATA_POSITION,
+                payload: response.data
+            })
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+}
 
 // export const getUserProfile = (id) => {
 //   return async function (dispatch) {
