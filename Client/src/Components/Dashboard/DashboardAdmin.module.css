@@ -18,9 +18,9 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
-
-  max-width: 895px; /* Ancho máximo */
-  margin: 0 auto;
+  width: 100%;  
+  margin: 20px auto;
+  max-width: 895px;
   margin-bottom: 20px;
 }
 
@@ -31,14 +31,6 @@
 .footer {
   margin-bottom: 25px;
 }
-
-
-  width: 100%;
-  max-width: 800px;
-  
-  margin: 20px auto; /* Centro el container horizontalmente */
-}
-
 
 .titulo {
   display: flex;
@@ -106,11 +98,5 @@
   .btnless {
     left: 10px; /* Ajusta el valor según tu diseño para pantallas pequeñas */
   }
-}
-
-  
-  
-
-  margin-top: 20px;
 }
 
