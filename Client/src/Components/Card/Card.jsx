@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllConvocations } from "../../Redux/actions";
 
 import "./../Convocations/Convocations.less";
+import Footer from "../Home/Footer/Footer";
 
 function Card() {
   const convocations = useSelector((state) => state.getConvocations);
@@ -26,6 +27,7 @@ function Card() {
   };
 
   return (
+    <>
     <div className="cards">
       {convocations.map((convocation, index) => (
         <div
@@ -70,6 +72,7 @@ function Card() {
         </div>
       ))}
     </div>
+    </>
   );
 }
 

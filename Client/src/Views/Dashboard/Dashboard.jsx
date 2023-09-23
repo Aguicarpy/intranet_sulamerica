@@ -1,14 +1,11 @@
 import DashboardAdmin from "../../Components/Dashboard/DashboardAdmin"
-import NavBar from "../../Components/Home/NavBar/NavBar";
-import Footer from "../../Components/Home/Footer/Footer";
+import style from "../../Components/Dashboard/DashboardAdmin.module.css"
 
 const Dashboard = () =>{
     return(
-        <div>
-            <NavBar></NavBar>
-            <DashboardAdmin />
-            <Footer></Footer>
-        </div>
+        <main className={style.main}>
+            <DashboardAdmin className={style.dashboardContainer}/>
+        </main>
     )
 }
 

@@ -5,7 +5,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
   padding: 10px 0;
-  position: fixed;
+  position: relative;
   bottom: 0; /* Coloca el footer en la parte inferior de la ventana del navegador */
   width: 100%; /* Ocupa todo el ancho de la ventana */
   box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave en la parte superior del pie de página */
