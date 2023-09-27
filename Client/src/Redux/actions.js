@@ -15,6 +15,7 @@ export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
 export const POST_OFFICER_SUCCESS = "POST_OFFICER_SUCCESS";
 export const POST_OFFICER_FAILURE = "POST_OFFICER_FAILURE";
 export const SEND_APPLY_JOB = "SEND_APPLY_JOB"
+export const GET_ALL_APPLY_WORK = "GET_ALL_APPLY_WORK"
 
 export const login_success = (dataUser) => {
   return {
@@ -75,7 +76,7 @@ export function getAllUsers() {
         return error.message;
       }
     };
-  }
+}
 
 export function deleteUser(id) {
   return async function (dispatch) {
@@ -188,6 +189,23 @@ export function sendApplyJob(officerId, convocationId) {
     }
   };
 }
+
+export function allApplyWork() {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${URL_BASE}/convocations/applyjob`);
+      return dispatch({
+        type: GET_ALL_APPLY_WORK,
+        payload: response.data,
+      });
+    } catch (error) {
+      return error.message;
+    }
+  };
+}
+
+
+
 // export const getUserProfile = (id) => {
 //   return async function (dispatch) {
 //     try {

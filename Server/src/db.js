@@ -22,7 +22,6 @@ fs.readdirSync(path.join(__dirname, '/models'))
 
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
-// Capitalizamos los nombres de los modelos ie: product => Product
 let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
@@ -31,13 +30,13 @@ const { Officer, Position, Convocation, ApplyWork} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
+Position.belongsToMany(Officer, {through: 'officer_position'})
+
 Position.hasMany(Convocation, {foreignKey: 'position_id', as: 'positionAdmin'})
 Convocation.belongsTo(Position, {foreignKey: 'position_id', as: 'position'})
-Officer.belongsToMany(Convocation, { through: ApplyWork, foreignKey: 'officer_id' });
-Convocation.belongsToMany(Officer, { through: ApplyWork, foreignKey: 'convocation_id'});
-// ApplyWork.hasOne(Officer, {as: 'officer'})
 
-Position.belongsToMany(Officer, {through: 'officer_position'})
+ApplyWork.belongsTo(Officer, { foreignKey: 'officer_id' });
+ApplyWork.belongsTo(Convocation, { foreignKey: 'convocation_id' });
 
 module.exports = {
   ...sequelize.models,

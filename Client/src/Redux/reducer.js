@@ -1,10 +1,12 @@
 import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, GET_ALL_USERS,
-  DELETE_USER, CHANGE_USER_TYPE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE} from './actions';
+  DELETE_USER, CHANGE_USER_TYPE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE,
+  GET_ALL_APPLY_WORK} from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
   let initialState = {
     dataUser: {},
     allUsers: [],
+    allApplyWorks: [],
     getConvocations: [],
     alerts: "",
     dataPositions: [],
@@ -86,6 +88,12 @@ const rootReducer = (state = initialState, action) => {
           ...state,
           alerts: "",
         };
+      }
+      case GET_ALL_APPLY_WORK: {
+        return {
+          ...state,
+          allApplyWorks: action.payload
+        }
       }
       default:
         return {

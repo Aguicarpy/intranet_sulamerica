@@ -1,15 +1,13 @@
 import { useSelector, useDispatch} from 'react-redux';
 import { useEffect,useState } from 'react';
-import NavBar from '../Home/NavBar/NavBar'
-
-import Footer from '../Home/Footer/Footer'
-
 import { getAllUsers } from '../../Redux/actions';
-import UserTable from '../UserTable/UserTable';
+import { Link } from 'react-router-dom';
+import UserTable from './UserTable/UserTable';
+import ApplyWorkTable from './applyWorkTable/ApplyWorkTable';
+import ConvocationsTable from './ConvocationsTable/ConvocationsTable'
 import styles from './DashboardAdmin.module.css'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom';
 
 const DashboardAdmin = () =>{
     const dispatch = useDispatch()
@@ -59,25 +57,25 @@ const DashboardAdmin = () =>{
         }
     }
 
-    // const handleShowDonations = ()=>{
-    //     if(showDonations === true){
-    //         setShowDonations(false)
-    //     }else{
-    //         setShowDonations(true)
-    //         setShowUsers(false)
-    //         setShowReviews(false)
-    //     }
-    // }
+    const handleShowDonations = ()=>{
+        if(showDonations === true){
+            setShowDonations(false)
+        }else{
+            setShowDonations(true)
+            setShowUsers(false)
+            setShowReviews(false)
+        }
+    }
 
-    // const handleShowReviews = ()=>{
-    //     if(showReviews === true){
-    //         setShowReviews(false)
-    //     }else{
-    //         setShowReviews(true)
-    //         setShowUsers(false)
-    //         setShowDonations(false)
-    //     }
-    // }
+    const handleShowReviews = ()=>{
+        if(showReviews === true){
+            setShowReviews(false)
+        }else{
+            setShowReviews(true)
+            setShowUsers(false)
+            setShowDonations(false)
+        }
+    }
 
 
     return(
@@ -91,12 +89,12 @@ const DashboardAdmin = () =>{
             <Col>
                 <button className={styles.buttonSelect} onClick={handleShowUsers}>FUNCIONARIOS</button>
             </Col>
-            {/* <Col>
-                <button className={styles.buttonSelect} onClick={handleShowDonations}>DONACIONES</button>
+            <Col>
+                <button className={styles.buttonSelect} onClick={handleShowDonations}>POSTULACIONES</button>
             </Col>
             <Col>
-                <button className={styles.buttonSelect} onClick={handleShowReviews}>RESEÑAS</button>
-            </Col> */}
+                <button className={styles.buttonSelect} onClick={handleShowReviews}>CONVOCATORIAS</button>
+            </Col>
         </Row>
         <div>
             {showUsers &&  
@@ -106,33 +104,40 @@ const DashboardAdmin = () =>{
                 <div className={styles.header}>
                   <p>FUNCIONARIOS</p>
                   <Link to="/admin-new-officer">
-                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Success</button>
+                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
                   </Link>
                 </div>
                 <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={users} />
               </div>
             </Col>
           </Row>}
-           {/* {showDonations && 
+           {showDonations && 
            <Row  xs={1} md={1}>
                 <Col>
                   <div className={styles.table}>
-                    <p>DONACIONES</p>
-                    <DonationsTable donations={donations}/>
+                    <h6>Postulaciones</h6>
+                    
+                    <ApplyWorkTable />
                   </div>
                 </Col>   
             </Row>
-           } */}
-            {/* {showReviews && 
+           }
+            {showReviews && 
              <Row  xs={1} md={1}>
                 <Col>
                   <div className={styles.table}>
-                    <p>Reviews</p>
-                    <ReviewsTable reviews={reviews}/>
+                  <div className={styles.header}>
+                  <p>CONVOCATORIAS</p>
+                  <Link to="/admin-new-convocation">
+                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
+                  </Link>
+                </div>
+                    
+                    <ConvocationsTable />
                   </div>
                 </Col>   
              </Row>
-         } */}
+         }
         </div>
         </div>
     </div>
