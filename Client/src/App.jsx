@@ -1,17 +1,15 @@
 import './App.css'
-import {Routes , Route} from 'react-router-dom'
+import {Routes, Route, useLocation} from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from './Views/Login/Login'
 import Home from './Views/Home/Home'
 import Profile from './Views/Profile/Profile'
 import DashboardAdmin from './Components/Dashboard/DashboardAdmin'
 import { Convocations } from './Components/Convocations/Convocations'
-
 import { FormNewAddOfficer } from './Components/FormNewAddOfficer/FormNewAddOfficer'
-
-
 import NavBar from './Components/Home/NavBar/NavBar'
 import Footer from './Components/Home/Footer/Footer'
-import { useLocation } from 'react-router-dom'
 
 
 //RENDERIZAR LAS VIEWS
@@ -35,6 +33,7 @@ function App() {
           </Routes>
           {location.pathname !== '/' && <Footer/>}
         </>
+        <ToastContainer></ToastContainer>
       </div>
     </>
   )
