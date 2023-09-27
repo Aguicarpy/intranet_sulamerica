@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserType, clearAlerts, deleteUser } from '../../Redux/actions';
+import { getAllUsers, changeUserType, clearAlerts, deleteUser } from '../../Redux/actions';
 import { NavLink } from 'react-router-dom';
 import styles from './UserTable.module.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,6 +10,10 @@ import 'react-toastify/dist/ReactToastify.css';
 function UserTable({ users, onUserDelete,onUpdateUser }) {
   const alert = useSelector((state) => state.alerts)
   const dispatch = useDispatch()
+  
+  useEffect(() =>{
+    dispatch(getAllUsers())
+  },[dispatch])
 
   function handleDeleteUser(id) {
     dispatch(deleteUser(id));
@@ -49,7 +53,7 @@ function UserTable({ users, onUserDelete,onUpdateUser }) {
                         {/* <th>Email</th> */}
                         <th>Teléfono</th>
                         <th>Tipo usuario</th>
-                        {/* <th>Creado en</th> */}
+                        <th>Posición</th>
                         <th>ACTION</th>
                       </tr>
                     </thead>
@@ -66,6 +70,12 @@ function UserTable({ users, onUserDelete,onUpdateUser }) {
                           {/* <td style={{maxWidth:"80%"}}>{user.email}</td> */}
                           <td className={styles.typecell}>{user.phone}</td>
                           <td className={styles.typecell}>{user.typeUser}</td>
+                          <td className={styles.typecell}>
+                          {user.Positions.map((position, posIndex) => (
+                          <span key={posIndex}>
+                            {position.position}{posIndex < user.Positions.length - 1 ? ', ' : ''}
+                          </span>))}
+                          </td>
                           {/* <td>{user.createdAt}</td> */}
                           <td>
                             <button style={{marginTop:"5px"}} onClick={() => handleDeleteUser(user.id)} className={styles.delete}>Borrar usuario</button>
