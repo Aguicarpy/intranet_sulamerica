@@ -14,6 +14,7 @@ export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
 export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
 export const POST_OFFICER_SUCCESS = "POST_OFFICER_SUCCESS";
 export const POST_OFFICER_FAILURE = "POST_OFFICER_FAILURE";
+export const SEND_APPLY_JOB = "SEND_APPLY_JOB"
 
 export const login_success = (dataUser) => {
   return {
@@ -123,7 +124,6 @@ export function changeUserType(id) {
     return async function (dispatch) {
       try {
         const response = await axios.get(`${URL_BASE}/convocations`);
-        console.log(response.data);
         return dispatch({
           type: GET_CONVOCATIONS,
           payload: response.data,
@@ -175,6 +175,19 @@ export function allPositions(){
     }
 }
 
+export function sendApplyJob(officerId, convocationId) {
+  return async function (dispatch) {
+    try {
+      const response = await axios.post(`${URL_BASE}/convocations/applyjob`,{ officerId, convocationId });
+      return dispatch({
+        type: SEND_APPLY_JOB,
+        payload: response.data,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+}
 // export const getUserProfile = (id) => {
 //   return async function (dispatch) {
 //     try {
