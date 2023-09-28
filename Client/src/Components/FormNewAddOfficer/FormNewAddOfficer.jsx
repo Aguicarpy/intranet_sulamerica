@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postOfficer, allPositions } from "../../Redux/actions";
+import { postOfficer, allPositions, clearAlerts } from "../../Redux/actions";
 import { useForm } from "../hooks/useForm";
 import "../FormNewAddOfficer/FormNewAddOfficer.less";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const FormNewAddOfficer = () => {
   const focusRef = useRef();
   const dispatch = useDispatch();
   const usersCreated = useSelector((state) => state.userCreated);
-  const dataPosition = useSelector((state) => state.dataPositions);
+  const dataPosition = useSelector((state) => state.dataPositions); 
+  const alert = useSelector((state) => state.alerts); 
 
   const [errors, setErrors] = useState({}); // State para almacenar errores
   const [imagePreview, setImagePreview] = useState(null);
@@ -110,6 +113,18 @@ export const FormNewAddOfficer = () => {
       dispatch(postOfficer(formState));
     }
   };
+
+  useEffect(() => {
+    if (alert) {
+      toast.info(alert, {
+        position: "top-center",
+        autoClose: 2000,
+        onClose:()=>{
+          dispatch(clearAlerts())
+        }
+      });
+    }
+  }, [alert, dispatch]);
 
   return (
     <>
@@ -268,12 +283,6 @@ export const FormNewAddOfficer = () => {
                     </div>
                   </div>
                 </div>
-
-                {usersCreated && (
-                  <div>
-                    Registro exitoso. ¡El usuario ha sido creado con éxito!
-                  </div>
-                )}
               </div>
             </div>
           </div>

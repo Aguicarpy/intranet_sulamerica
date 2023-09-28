@@ -8,6 +8,7 @@ import Profile from './Views/Profile/Profile'
 import DashboardAdmin from './Components/Dashboard/DashboardAdmin'
 import { Convocations } from './Components/Convocations/Convocations'
 import { FormNewAddOfficer } from './Components/FormNewAddOfficer/FormNewAddOfficer'
+import { FormNewConvocation } from './Components/FormNewConvocation/FormNewConvocation';
 import NavBar from './Components/Home/NavBar/NavBar'
 import Footer from './Components/Home/Footer/Footer'
 
@@ -27,9 +28,8 @@ function App() {
               <Route path="/perfil/:id" element={<Profile />} />
               <Route path="/postulaciones" element={<Convocations />} />
               <Route path="/admin-dashboard" element={<DashboardAdmin />} />
-
               <Route path="/admin-new-officer" element={<FormNewAddOfficer />} />
-
+              <Route path="/admin-new-convocation" element={<FormNewConvocation />}/>
           </Routes>
           {location.pathname !== '/' && <Footer/>}
         </>
