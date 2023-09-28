@@ -147,10 +147,10 @@ export function changeUserType(id) {
     };
   }
 
-  export function searchOfficer(name) {
+  export function searchOfficer(email) {
     return async function (dispatch) {
       try {
-        const response = await axios.get(`${URL_BASE}/officers?name=${name}`);
+        const response = await axios.get(`${URL_BASE}/officers?email=${email}`);
         return dispatch({
           type: GET_OFFICER_BY_NAME,
           payload: response.data,

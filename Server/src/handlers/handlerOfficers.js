@@ -1,11 +1,12 @@
 const postNewOfficer = require('../controllers/officers/postOfficer')
 const getAllOfficers = require('../controllers/officers/getAllOfficers')
-const getOfficerByName = require('../controllers/officers/getOfficerByName')
+const getOfficerByEmail = require('../controllers/officers/getOfficerByEmail')
 const getOneOfficerData = require('../controllers/officers/getOneOfficerData')
 const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 const setTypeUser = require('../controllers/officers/setTypeUser')
 const { Officer } = require('../db')
+const Sequelize = require('sequelize')
 
 const postOfficer = async(req,res) => {
 
@@ -15,14 +16,16 @@ const postOfficer = async(req,res) => {
         if (!name || !birthDay || !phone || !typeUser || !email || !position || !password) {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
         }
+        //Busco por email incluyendo que sean minisculas/mayusculas
         const existingOfficer = await Officer.findOne({
-            where: { email },
+          where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('email')), email.toLowerCase()),
           });
         if (existingOfficer) {
             return res.status(400).json({ message: 'Ya existe un funcionario asociado a ese email' });
         }
+
         const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, typeUser, email, position, password)
-        return res.status(201).json({Officers: chargeNewOfficer})
+        return res.status(201).json({Officer: chargeNewOfficer})
 
     } catch (error) {
         console.error("Ocurrió un error al crear su cuenta de usuario", error);
@@ -34,12 +37,12 @@ const postOfficer = async(req,res) => {
 
 
 const getOfficerData = async(req,res) => {
-    const { name } = req.query
+    const { email } = req.query
     try {
         const getAllDataOfficers = await getAllOfficers()
-        if(name){
-            const getOfficerDataByName = await getOfficerByName(name)
-            return getOfficerDataByName.length > 0 ? res.status(200).json(getOfficerDataByName) : res.status(404).send('Funcionario no encontrado')
+        if(email){
+            const getOfficerDataByEmail = await getOfficerByEmail(email)
+            return getOfficerDataByEmail.length > 0 ? res.status(200).json(getOfficerDataByEmail) : res.status(404).send('Funcionario no encontrado')
         } else {
             return getAllDataOfficers ? res.status(200).json(getAllDataOfficers) : res.status(404).json('Hubo un error al acceder a los datos de los funcionarios')
         }
