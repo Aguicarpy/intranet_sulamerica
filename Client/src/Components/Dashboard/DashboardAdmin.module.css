@@ -45,6 +45,15 @@
   margin-bottom: 20px;
 }
 
+.mininavbar {
+  background-color: #f5f5f5; /* Color de fondo */
+  color: #fff; /* Color de texto */
+  padding: 10px; /* Espaciado interno */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .buttonSelect {
 
   background-color: #84232b; /* Rojo personalizado para tu empresa */
@@ -81,10 +90,10 @@
 
 .btnless {
   display: flex;
-    position: relative;
-    margin-right: 10px;
-    left: 605px;
-    bottom: 8px;
+  position: relative;
+  margin-right: 10px;
+  left: 590px;
+  bottom: 5px;
 }
 
 /* Media queries para tamaños de pantalla específicos */

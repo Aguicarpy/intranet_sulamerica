@@ -1,0 +1,54 @@
+.textBox {
+    border-style: double;
+    height: 25px;
+    width: 230px;
+    font-size: 13px;
+    font-weight: 200;
+    border-radius: .3rem;
+
+}
+.textBox:active{
+    color: #000000;
+}
+
+
+.button {
+    border-style: none;
+    display: inline-block;
+    background-color: transparent;
+    color: #EEB3E7;
+    height: 30px;
+    font-size: 25px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    margin-top: 1px;
+    margin-left: 10px;
+    border-radius: 5px; 
+}
+
+.button:hover {
+    color:rgb(219, 118, 245);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .textBox{
+        width: 70%;
+        height: 20px;
+        font-size: 12px;
+    }
+    .button{
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .textBox{
+        width: 60%;
+        height: 15px;
+        font-size: 10px;
+    }
+    .button{
+        font-size: 10px;
+    }
+}

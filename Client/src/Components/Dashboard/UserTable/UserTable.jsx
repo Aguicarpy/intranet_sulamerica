@@ -7,6 +7,7 @@ import styles from './UserTable.module.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 function UserTable({ users, onUserDelete,onUpdateUser }) {
   const alert = useSelector((state) => state.alerts)
   const dispatch = useDispatch()

@@ -3,11 +3,12 @@ import { useEffect,useState } from 'react';
 import { getAllUsers } from '../../Redux/actions';
 import { Link } from 'react-router-dom';
 import UserTable from './UserTable/UserTable';
-import ApplyWorkTable from './applyWorkTable/ApplyWorkTable';
+import ApplyWorkTable from './ApplyWorkTable/ApplyWorkTable';
 import ConvocationsTable from './ConvocationsTable/ConvocationsTable'
 import styles from './DashboardAdmin.module.css'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import SearchBarUser from './searchBar/searchBarUser/searchBarUser';
 
 const DashboardAdmin = () =>{
     const dispatch = useDispatch()
@@ -16,6 +17,8 @@ const DashboardAdmin = () =>{
     
     const [users, setUsers] = useState([]); // Estado de los usuarios
     const [showUsers,setShowUsers] = useState(false)
+    const [searchResults, setSearchResults] = useState([]);
+
     useEffect(() => {
         dispatch(getAllUsers()).then((data)=>{setUsers(data.payload)});
     }, [dispatch]);
@@ -80,9 +83,6 @@ const DashboardAdmin = () =>{
 
     return(
         <div className={styles.page}>
-        {/* <div className={styles.navbar}>
-            <NavBar/> 
-        </div> */}
         <div className={styles.container}>
         <p className={styles.titulo}>DASHBOARD DE RRHH</p>
         <Row   md={3} className={styles.botones}>
@@ -103,11 +103,14 @@ const DashboardAdmin = () =>{
               <div className={styles.table}>
                 <div className={styles.header}>
                   <p>FUNCIONARIOS</p>
+                </div>
+                <div className={styles.mininavbar}>
                   <Link to="/admin-new-officer">
                     <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
                   </Link>
+                  <SearchBarUser setSearchResults={setSearchResults}/>
                 </div>
-                <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={users} />
+                <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={searchResults.length > 0 ? searchResults : users} />
               </div>
             </Col>
           </Row>}
@@ -131,13 +134,12 @@ const DashboardAdmin = () =>{
                   <Link to="/admin-new-convocation">
                     <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
                   </Link>
-                </div>
-                    
+                </div>   
                     <ConvocationsTable />
                   </div>
                 </Col>   
              </Row>
-         }
+            }
         </div>
         </div>
     </div>
