@@ -5,6 +5,7 @@ const getOneOfficerData = require('../controllers/officers/getOneOfficerData')
 const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 const setTypeUser = require('../controllers/officers/setTypeUser')
+const { Officer } = require('../db')
 
 const postOfficer = async(req,res) => {
 
@@ -13,6 +14,12 @@ const postOfficer = async(req,res) => {
     try {
         if (!name || !birthDay || !phone || !typeUser || !email || !position || !password) {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
+        }
+        const existingOfficer = await Officer.findOne({
+            where: { email },
+          });
+        if (existingOfficer) {
+            return res.status(400).json({ message: 'Ya existe un funcionario asociado a ese email' });
         }
         const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, typeUser, email, position, password)
         return res.status(201).json({Officers: chargeNewOfficer})

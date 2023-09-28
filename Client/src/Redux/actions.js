@@ -14,6 +14,8 @@ export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
 export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
 export const POST_OFFICER_SUCCESS = "POST_OFFICER_SUCCESS";
 export const POST_OFFICER_FAILURE = "POST_OFFICER_FAILURE";
+export const POST_CONVOCATION_SUCCESS = "POST_CONVOCATION_SUCCESS"
+export const POST_CONVOCATION_FAILURE = "POST_CONVOCATION_FAILURE"
 export const SEND_APPLY_JOB = "SEND_APPLY_JOB"
 export const GET_ALL_APPLY_WORK = "GET_ALL_APPLY_WORK"
 
@@ -144,15 +146,36 @@ export function changeUserType(id) {
         if (response.status === 201) {
           dispatch({
             type: POST_OFFICER_SUCCESS, //para setear userCreated en true y redireccionar a la view login
+            payload: "Nuevo Funcionario Registrado"
           });
-          window.alert(response.data.message); // Accedemos al mensaje en response.data
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          dispatch({
+            type: POST_OFFICER_FAILURE, // para setear userCreated en false y mantenerme en la view de registro
+            payload: "Ya existe un funcionario asociado a ese email"
+          });
+        } 
+      }
+    };
+  }
+  export function postConvocation(convocation) {
+    return async function (dispatch) {
+      try {
+        const response = await axios.post(`${URL_BASE}/convocations`, convocation);
+        if (response.status === 201) {
+          dispatch({
+            type: POST_CONVOCATION_SUCCESS,
+            payload: "Convocatoria creada con éxito" 
+          });
         }
       } catch (error) {
         if (error.response && error.response.status === 409) {
           dispatch({
-            type: POST_OFFICER_FAILURE, // para setear userCreated en false y mantenerme en la view de registro
+            type: POST_CONVOCATION_FAILURE, 
+            payload: "Fallo al crear la convocatoria, revise los campos"
           });
-          window.alert(error.response.data.error); // Muestra el mensaje personalizado del servidor en caso de un error 409
+          window.alert(error.response.data.error); 
         } else {
           window.alert(error.message);
         }
@@ -203,40 +226,6 @@ export function allApplyWork() {
     }
   };
 }
-
-
-
-// export const getUserProfile = (id) => {
-//   return async function (dispatch) {
-//     try {
-//       const response = await axios.get(`http://localhost:3015/officers/${id}`);
-//       console.log(response);
-//       return dispatch({
-//         type: GET_USER_PROFILE,
-//         payload: response.data,
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
-
-
-
-
-// export default register_officer = async(payload) => {
-//     return async function (dispatch) {
-//         try {
-//             const response = await axios.post(`${URL_BASE}/officers`, payload);
-//             return response;
-//             dispatch({
-//                 type: POST_OFFICER
-//             })
-//         } catch (error) {
-//             console.error('Error al cargar funcionario');
-//         }
-//       };
-// }
 
 export function clearAlerts() {
     return {
