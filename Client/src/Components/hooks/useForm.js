@@ -8,9 +8,10 @@ export const useForm = (addUser) => {
 
     const onInputChange=({target})=>{
         const { name, value } = target
+        const newValue = name === "locals" ? [...formState[name], value] : value;
         setFormState({
             ...formState,
-            [name]: value
+            [name]: newValue
         })
     }
 
@@ -18,6 +19,7 @@ export const useForm = (addUser) => {
   return {
     ...formState,
     formState,
+    setFormState,
     onInputChange
   }
 }

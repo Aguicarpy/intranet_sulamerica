@@ -1,9 +1,11 @@
 const { Router } = require('express');
-const { postPosition, getPosition } = require('../handlers/handlerPositions');
+const { handlerPostPosition, handlerGetPositions, handlerPostLocal, handlerAllLocals} = require('../handlers/handlerPositions');
 
 const routePositions = Router();
 
-routePositions.post('/', postPosition)
-routePositions.get('/', getPosition)
+routePositions.post('/', handlerPostPosition)
+routePositions.get('/', handlerGetPositions)
+routePositions.post('/local', handlerPostLocal)
+routePositions.get('/local', handlerAllLocals)
 
 module.exports = routePositions;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postOfficer, allPositions, clearAlerts } from "../../Redux/actions";
+import { postOfficer, allPositions, allLocals,clearAlerts } from "../../Redux/actions";
 import { useForm } from "../hooks/useForm";
 import "../FormNewAddOfficer/FormNewAddOfficer.less";
 import { toast } from "react-toastify";
@@ -10,14 +10,18 @@ export const FormNewAddOfficer = () => {
   const focusRef = useRef();
   const dispatch = useDispatch();
   const usersCreated = useSelector((state) => state.userCreated);
-  const dataPosition = useSelector((state) => state.dataPositions); 
+  const dataPosition = useSelector((state) => state.dataPositions);
+  // console.log(dataPosition);
+  const dataLocal = useSelector((state) => state.dataLocals);
+  
+
   const alert = useSelector((state) => state.alerts); 
 
   const [errors, setErrors] = useState({}); // State para almacenar errores
   const [imagePreview, setImagePreview] = useState(null);
   const [isLoadingImage, setIsLoadingImage] = useState(false); // Estado para indicar si se está cargando la imagen
   const [positionsData, setPositionsData] = useState([]); // Aquí almacenaremos las opciones de posición
-
+  const [localsData, setLocalsData] = useState([])
   const {
     formState,
     name,
@@ -25,15 +29,18 @@ export const FormNewAddOfficer = () => {
     phone,
     typeUser,
     position,
+    locals,
     email,
     password,
     onInputChange,
+    setFormState
   } = useForm({
     name: "",
     birthDay: "",
     phone: "",
     typeUser: "Admin",
     position: "", // Inicialmente, establecemos una cadena vacía
+    locals: [],
     email: "",
     password: "",
   });
@@ -41,6 +48,10 @@ export const FormNewAddOfficer = () => {
   useEffect(() => {
     dispatch(allPositions());
   }, [dispatch]);
+  useEffect(() => {
+    dispatch(allLocals());
+  }, [dispatch]);
+  console.log(dataLocal);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -52,6 +63,12 @@ export const FormNewAddOfficer = () => {
       setPositionsData(dataPosition.map((cargo) => cargo.position));
     }
   }, [dataPosition]);
+
+  useEffect(() => {
+    if (dataLocal.length > 0) {
+      setLocalsData(dataLocal.map((locals) => locals.local));
+    }
+  }, [dataLocal]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -110,6 +127,11 @@ export const FormNewAddOfficer = () => {
 
     // Validar antes de enviar
     if (validateForm()) {
+      const localsArray = Array.isArray(locals) ? locals : [locals];
+      setFormState({
+        ...formState,
+        locals: localsArray,
+      });
       dispatch(postOfficer(formState));
     }
   };
@@ -271,6 +293,21 @@ export const FormNewAddOfficer = () => {
                           {positionsData.map((positionOption) => (
                             <option key={positionOption} value={positionOption}>
                               {positionOption}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select
+                          className="form-control"
+                          name="locals"
+                          value={locals}
+                          onChange={onInputChange}
+                        >
+                          <option value="">Seleccione una sucursal</option>
+                          {localsData.map((localOption) => (
+                            <option key={localOption} value={localOption}>
+                              {localOption}
                             </option>
                           ))}
                         </select>

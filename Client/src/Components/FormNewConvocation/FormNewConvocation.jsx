@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postConvocation, allPositions, clearAlerts } from "../../Redux/actions";
+import { postConvocation, allPositions, clearAlerts, allLocals } from "../../Redux/actions";
 import { useForm } from "../hooks/useForm";
 import "../FormNewConvocation/FormNewConvocation.less";
 import { toast } from "react-toastify";
@@ -11,10 +11,12 @@ export const FormNewConvocation = () =>{
     const dispatch = useDispatch();
     const convocationsCreated = useSelector((state) => state.convocationCreated);
     const dataPosition = useSelector((state) => state.dataPositions);
+    const dataLocal = useSelector((state) => state.dataLocals);
     const alert = useSelector((state) => state.alerts)
 
   const [errors, setErrors] = useState({}); // State para almacenar errores
   const [positionsData, setPositionsData] = useState([]); // Aquí almacenaremos las opciones de posición
+  const [localsData, setLocalsData] = useState([]); // Aquí almacenaremos las opciones de posición
 
   const {
     formState,
@@ -22,16 +24,21 @@ export const FormNewConvocation = () =>{
     places,
     state,
     position,
+    local,
     onInputChange,
   } = useForm({
     title: "",
     places: "",
     state: "",
     position: "", // Inicialmente, establecemos una cadena vacía
+    local: ""
   });
 
   useEffect(() => {
     dispatch(allPositions());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(allLocals());
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,6 +46,12 @@ export const FormNewConvocation = () =>{
       setPositionsData(dataPosition.map((cargo) => cargo.position));
     }
   }, [dataPosition]);
+
+  useEffect(() => {
+    if (dataLocal.length > 0) {
+      setLocalsData(dataLocal.map((locals) => locals.local));
+    }
+  }, [dataLocal]);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -160,6 +173,21 @@ export const FormNewConvocation = () =>{
                           {positionsData.map((positionOption) => (
                             <option key={positionOption} value={positionOption}>
                               {positionOption}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <select
+                          className="form-control"
+                          name="local"
+                          value={local}
+                          onChange={onInputChange}
+                        >
+                          <option value="">Seleccione una sucursal</option>
+                          {localsData.map((localOption) => (
+                            <option key={localOption} value={localOption}>
+                              {localOption}
                             </option>
                           ))}
                         </select>

@@ -9,15 +9,25 @@ import styles from './DashboardAdmin.module.css'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import SearchBarUser from './searchBar/searchBarUser/searchBarUser';
+import FiltersUsers from '../Filters/FiltersUsers/FiltersUsers';
 
 const DashboardAdmin = () =>{
     const dispatch = useDispatch()
     const dbUsers = useSelector((state) => state.allUsers)
+    const filteredUsers  = useSelector((state) => state.filteredUsers)
     //AL RENDERIZAR DASHBOARD CARGO ALLUSERS CON USUARIOS Y ESTADO LOCAL TAMBIEN
     
     const [users, setUsers] = useState([]); // Estado de los usuarios
     const [showUsers,setShowUsers] = useState(false)
     const [searchResults, setSearchResults] = useState([]);
+    const [filterValues, setFilterValues] = useState({
+      local: '',
+      department: '',
+      position: '',
+      orden:''
+    });
+    
+
 
     useEffect(() => {
         dispatch(getAllUsers()).then((data)=>{setUsers(data.payload)});
@@ -105,12 +115,23 @@ const DashboardAdmin = () =>{
                   <p>FUNCIONARIOS</p>
                 </div>
                 <div className={styles.mininavbar}>
+                  <div className={styles.filtersContainer}>
+                    <FiltersUsers filterValues={filterValues} setFilterValues={setFilterValues}/>
+                  </div>
+                  <div className={styles.searchBar}>
+                    <SearchBarUser setSearchResults={setSearchResults}/>
+                  </div>
                   <Link to="/admin-new-officer">
-                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
+                    <button type="button" className={styles.btnAgregar}>Agregar</button>
                   </Link>
-                  <SearchBarUser setSearchResults={setSearchResults}/>
                 </div>
-                <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={searchResults.length > 0 ? searchResults : users} />
+                <UserTable filteredUsers={filteredUsers} onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={
+                      searchResults && searchResults.length > 0
+                        ? searchResults
+                        : filteredUsers.length > 0 // Cambia para usar filteredUsers
+                        ? filteredUsers
+                        : users // Si no hay filtros aplicados, muestra todos los usuarios 
+                }/>
               </div>
             </Col>
           </Row>}

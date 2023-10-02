@@ -100,6 +100,7 @@ function Card() {
             }`}
           >
             {/* <ul> */}
+              <p>{convocation.local.local}</p>
               <p>{convocation.position.department}</p>
               <p>{convocation.position.position}</p>
               <p>{convocation.position.salary}</p>

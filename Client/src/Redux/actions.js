@@ -7,8 +7,11 @@ export const GET_DATA = "GET_DATA"
 export const GET_USER_PROFILE = "GET_USER_PROFILE"
 export const USER_LOGOUT = "USER_LOGOUT"
 export const DATA_POSITION = "DATA_POSITION"
+export const DATA_LOCAL = "DATA_LOCAL"
 export const GET_ALL_USERS = "GET_ALL_USERS"
 export const GET_OFFICER_BY_NAME = "GET_OFFICER_BY_NAME"
+export const APPLY_FILTERS_SUCCESS = "APPLY_FILTERS_SUCCESS"
+export const APPLY_FILTERS_FAILURE = "APPLY_FILTERS_FAILURE"
 export const DELETE_USER = "DELETE_USER"
 export const CHANGE_USER_TYPE = "CHANGE_USER_TYPE"
 export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
@@ -71,7 +74,7 @@ export function postOfficer(user) {
   return async function (dispatch) {
     try {
       const response = await axios.post(`${URL_BASE}/officers`, user);
-
+      console.log(response);
       // Si el servidor devuelve un código de estado 201 (creado), muestra el mensaje de éxito
       if (response.status === 201) {
         dispatch({
@@ -151,6 +154,13 @@ export function changeUserType(id) {
     return async function (dispatch) {
       try {
         const response = await axios.get(`${URL_BASE}/officers?email=${email}`);
+
+        if (response.data.length === 0) {
+          return dispatch({
+            type: GET_OFFICER_BY_NAME,
+            payload: null, // o un objeto que indique que no se encontraron resultados
+          });
+        }
         return dispatch({
           type: GET_OFFICER_BY_NAME,
           payload: response.data,
@@ -160,6 +170,21 @@ export function changeUserType(id) {
       }
     };
   }
+
+  export const filterUsers = (orden, position, local, department) => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get(`${URL_BASE}/officers/filter`, {
+          params: { orden, position, local, department },
+        });
+  
+        dispatch({ type: APPLY_FILTERS_SUCCESS, payload: response.data });
+      } catch (error) {
+        console.error('Error al filtrar usuarios:', error);
+        dispatch({ type: APPLY_FILTERS_FAILURE, payload: error });
+      }
+    };
+  };
 
   export const getAllConvocations = () => {
     return async function (dispatch) {
@@ -207,6 +232,19 @@ export function allPositions(){
             // console.log(response.data);
             return dispatch({
                 type: DATA_POSITION,
+                payload: response.data
+            })
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+}
+export function allLocals(){
+    return async function(dispatch){
+        try {
+            const response = await axios.get(`${URL_BASE}/positions/local`)
+            return dispatch({
+                type: DATA_LOCAL,
                 payload: response.data
             })
         } catch (error) {

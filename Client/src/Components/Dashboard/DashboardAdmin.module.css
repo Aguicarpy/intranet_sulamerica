@@ -2,15 +2,13 @@
 
 .page {
 
-  background-color: #f2f2f2;
+  background-color: #FFFDF6;
   font-family: Arial, sans-serif;
-
-  /* background-color: #f2f2f2; */
   font-family: Arial, sans-serif;
   display: grid;
-  grid-template-rows: auto 1fr auto; /* Divide el contenido en tres filas: header, main y footer */
-  min-height: 100vh; /* Asegura que la página ocupe al menos la altura de la ventana */
-
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  align-items: center;
 }
 
 .container {
@@ -20,8 +18,9 @@
   padding: 20px;
   width: 100%;  
   margin: 20px auto;
-  max-width: 895px;
+  max-width: 1100px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .navbar {
@@ -37,7 +36,7 @@
   justify-content: center;
   font-size: 24px;
   font-weight: bold;
-  color: #84232b; /* Rojo personalizado para tu empresa */
+  color: #84232b;
   margin-bottom: 20px;
 }
 
@@ -46,21 +45,46 @@
 }
 
 .mininavbar {
-  background-color: #f5f5f5; /* Color de fondo */
-  color: #fff; /* Color de texto */
-  padding: 10px; /* Espaciado interno */
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  color: #000;
+  padding: 10px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column; 
+  align-items: flex-end; 
+  text-align: center;
 }
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px;
+}
+
+.searchBar {
+  margin-top: -40px; 
+  
+}
+
+.btnAgregar {
+  background-color: #245e36;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
 
 .buttonSelect {
 
-  background-color: #84232b; /* Rojo personalizado para tu empresa */
+  background-color: #84232b; 
   color: #fff;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
+  align-items: center;
   cursor: pointer;
   font-size: 16px;
   margin-right: 10px;
@@ -69,15 +93,15 @@
 
 .buttonSelect:hover {
 
-  background-color: #f100009a; /* Cambio de tono de rojo al pasar el mouse */
+  background-color: #f100009a; 
 
 }
 
 .table {
   background-color: #fff;
-  border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  /* width: 800px; */
 
   
   margin-top: 20px;
@@ -85,7 +109,7 @@
 
 .header {
   display: flex;
-  align-items: center; /* Alinea verticalmente al centro */
+  align-items: center; 
 }
 
 .btnless {

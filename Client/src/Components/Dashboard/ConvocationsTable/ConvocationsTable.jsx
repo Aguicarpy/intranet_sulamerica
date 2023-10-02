@@ -35,7 +35,7 @@ function ApplyWorkTable() {
                             <td className={styles.typecell}>{convocation.title}</td>
                             <td className={styles.typecell}>{convocation.position.department}</td>
                             <td className={styles.typecell}>{convocation.position.position}</td>
-                            <td className={styles.typecell}>{convocation.position.local}</td>
+                            <td className={styles.typecell}>{convocation.local.local}</td>
                             <td className={styles.typecell}>{convocation.position.salary}</td>
                             <td className={styles.typecell}>{convocation.position.shedule}</td>
                             <td className={styles.typecell}>{convocation.createdAt}</td>

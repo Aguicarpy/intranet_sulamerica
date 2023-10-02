@@ -1,0 +1,41 @@
+/* FiltersUsers.module.css */
+.filtros {
+  /* Estilos generales para los elementos de filtro */
+  margin: 0 10px; /* Margen entre los elementos de filtro */
+}
+
+.filterButtonRow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.filterButtonInner {
+  /* Estilos para los select de filtro */
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filterButtonFiltrar {
+  /* Estilos para los botones de filtrar y restablecer */
+  background-color: #245e36;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+/* Clase adicional para que los filtros se ajusten a mininavbar */
+.mininavbarFilter {
+  background-color: #f5f5f5; /* Color de fondo */
+  color: #fff; /* Color de texto */
+  padding: 10px; /* Espaciado interno */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
