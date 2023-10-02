@@ -31,18 +31,18 @@
   
   .delete,
   .type {
-    background-color: #e60000; /* Rojo personalizado para tu empresa */
+    background-color: #245e36; 
     color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 16px;
     cursor: pointer;
-    font-size: 14px;
-    margin-right: 5px;
+    font-size: 13px;
+    align-items: center;
     transition: background-color 0.3s ease;
   }
   .typecell {
-    background-color: #e70e0eb4; /* Rojo personalizado para tu empresa */
+    background-color: #e70e0eb4; 
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -53,30 +53,8 @@
     transition: background-color 0.3s ease;
   }
   
-  .delete:hover,
-  .type:hover {
-    background-color: #cc0000; /* Cambio de tono de rojo al pasar el mouse */
-  }
-  
   .typecell:hover{
     background-color: rgba(79, 90, 90, 0.356);
   }
-  /* Estilos para el botón "Ver publicaciones" si deseas descomentarlo más tarde
-  .see {
-    background-color: #007bff; /* Azul personalizado para tu empresa 
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-right: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .see:hover {
-    background-color: #0056b3; /* Cambio de tono de azul al pasar el mouse 
-  }
-  */
   
   

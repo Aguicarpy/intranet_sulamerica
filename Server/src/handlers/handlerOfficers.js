@@ -1,28 +1,35 @@
 const postNewOfficer = require('../controllers/officers/postOfficer')
 const getAllOfficers = require('../controllers/officers/getAllOfficers')
-const getOfficerByName = require('../controllers/officers/getOfficerByName')
+const getOfficerByEmail = require('../controllers/officers/getOfficerByEmail')
 const getOneOfficerData = require('../controllers/officers/getOneOfficerData')
 const modifyOfficer = require('../controllers/officers/putOfficerData')
 const deleteOfficer = require('../controllers/officers/deleteOfficer')
 const setTypeUser = require('../controllers/officers/setTypeUser')
+const filterOfficers = require('../controllers/officers/filterOfficers')
 const { Officer } = require('../db')
+const Sequelize = require('sequelize')
 
 const postOfficer = async(req,res) => {
 
-    const {name, birthDay, phone, typeUser, email, position, password} = req.body
+    const {name, birthDay, phone, typeUser, email, position, locals, password} = req.body
 
     try {
-        if (!name || !birthDay || !phone || !typeUser || !email || !position || !password) {
+        if (!name || !birthDay || !phone || !typeUser || !email || !position || !password || !locals) {
             return res.status(400).json({ message: 'Campos vacios, rellene los datos necesarios' });
         }
+        //Busco por email incluyendo que sean minisculas/mayusculas
         const existingOfficer = await Officer.findOne({
-            where: { email },
+          where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('email')), email.toLowerCase()),
           });
         if (existingOfficer) {
             return res.status(400).json({ message: 'Ya existe un funcionario asociado a ese email' });
         }
-        const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, typeUser, email, position, password)
-        return res.status(201).json({Officers: chargeNewOfficer})
+        if (!Array.isArray(locals)) {
+          return res.status(400).json({ message: "'local' debe ser un array de sucursales" });
+        }
+
+        const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, typeUser, email, position, locals, password)
+        return res.status(201).json({Officer: chargeNewOfficer})
 
     } catch (error) {
         console.error("Ocurrió un error al crear su cuenta de usuario", error);
@@ -34,12 +41,12 @@ const postOfficer = async(req,res) => {
 
 
 const getOfficerData = async(req,res) => {
-    const { name } = req.query
+    const { email } = req.query
     try {
         const getAllDataOfficers = await getAllOfficers()
-        if(name){
-            const getOfficerDataByName = await getOfficerByName(name)
-            return getOfficerDataByName.length > 0 ? res.status(200).json(getOfficerDataByName) : res.status(404).send('Funcionario no encontrado')
+        if(email){
+            const getOfficerDataByEmail = await getOfficerByEmail(email)
+            return getOfficerDataByEmail.length > 0 ? res.status(200).json(getOfficerDataByEmail) : res.status(404).send('Funcionario no encontrado')
         } else {
             return getAllDataOfficers ? res.status(200).json(getAllDataOfficers) : res.status(404).json('Hubo un error al acceder a los datos de los funcionarios')
         }
@@ -101,6 +108,19 @@ const handlerSetTypeUser = async (req, res) => {
       console.error("Ocurrió un error al actualizar el tipo de usuario");
       return res.status(500).json({ error: error.message });
     }
-  };
+};
 
-module.exports = {postOfficer, getOfficerData, getOfficerDataLogged, updateOfficerData, deleteOfficerData, handlerSetTypeUser}
+const handlerFilters = async(req, res) => {
+  const { orden, position, local, department } = req.query
+  try {
+    const usersFiltered = await filterOfficers(orden, position, local, department)
+    return res.status(200).json(usersFiltered)
+  } catch (error) {
+    console.error("Error al filtrar los datos:", error);
+    return res.status(500).json({ error: "Error al filtrar los datos" });
+  }
+}
+
+module.exports = {
+  postOfficer, getOfficerData, getOfficerDataLogged,updateOfficerData, deleteOfficerData,
+  handlerSetTypeUser, handlerFilters}

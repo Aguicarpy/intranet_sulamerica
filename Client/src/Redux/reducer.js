@@ -1,15 +1,20 @@
-import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, GET_ALL_USERS,
-  DELETE_USER, CHANGE_USER_TYPE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE,
-  GET_ALL_APPLY_WORK, POST_CONVOCATION_SUCCESS, POST_CONVOCATION_FAILURE} from './actions';
+import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, DATA_LOCAL, GET_ALL_USERS,
+  DELETE_USER, CHANGE_USER_TYPE, GET_OFFICER_BY_NAME, APPLY_FILTERS_SUCCESS, APPLY_FILTERS_FAILURE,
+  CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE, GET_ALL_APPLY_WORK, 
+  POST_CONVOCATION_SUCCESS, POST_CONVOCATION_FAILURE} from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
   let initialState = {
-    dataUser: {},
     allUsers: [],
+    dataUser: {},
     allApplyWorks: [],
     getConvocations: [],
+    // filters: { local: "", position: "", department: "" },
+    // orden: { orden: "" },
+    filteredUsers: [],
     alerts: "",
     dataPositions: [],
+    dataLocals: [],
     loginUser: userLogedIn,
     userCreated: false,
     convocationCreated: false,
@@ -60,6 +65,16 @@ const rootReducer = (state = initialState, action) => {
           alerts: action.payload,
         };
       }
+      case GET_OFFICER_BY_NAME:
+      return {
+        ...state,
+        allUsers: action.payload || [],
+      };
+    case APPLY_FILTERS_SUCCESS:
+      return {
+        ...state,
+        filteredUsers: action.payload,
+      };
       case GET_CONVOCATIONS:
       return {
         ...state,
@@ -94,7 +109,12 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           dataPositions: action.payload
-        }
+      }
+      case DATA_LOCAL:
+        return {
+          ...state,
+          dataLocals: action.payload
+      }
 
       case CLEAR_ALERTS_STATE: {
         return {

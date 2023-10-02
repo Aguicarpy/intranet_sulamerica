@@ -7,7 +7,7 @@ export const UserProfile = () => {
     const { id } = useParams();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
-  console.log(userProfile.Positions);
+  console.log(userProfile);
 //   console.log(dataPosition);
   const dataPosition = userProfile.Positions.map((cargo) => cargo.position)
   const dataDepartment = userProfile.Positions.map((cargo) => cargo.department)

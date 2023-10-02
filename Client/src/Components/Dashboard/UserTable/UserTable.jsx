@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers, changeUserType, clearAlerts, deleteUser } from '../../../Redux/actions';
@@ -7,10 +7,13 @@ import styles from './UserTable.module.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function UserTable({ users, onUserDelete,onUpdateUser }) {
+
+function UserTable({ users, onUserDelete, filteredUsers, onUpdateUser }) {
   const alert = useSelector((state) => state.alerts)
+  const local = useSelector((state) => state.dataLocals)
   const dispatch = useDispatch()
-  
+  const [noResults, setNoResults] = useState(false);
+
   useEffect(() =>{
     dispatch(getAllUsers())
   },[dispatch])
@@ -47,45 +50,50 @@ function UserTable({ users, onUserDelete,onUpdateUser }) {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Email</th>
-                        {/* <th>Apellido</th> */}
-                        <th>Fecha de Nac.</th>
-                        {/* <th>Dirección</th> */}
-                        {/* <th>Email</th> */}
+                        <th>Fecha /
+                        nacimiento</th>
                         <th>Teléfono</th>
                         <th>Tipo usuario</th>
+                        <th>Sucursal</th>
                         <th>Posición</th>
-                        <th>ACTION</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map((user, index) => (
+                      {filteredUsers.length === 0 && !noResults ?  (
+                        <tr>
+                          <td colSpan="9">No se encontraron coincidencias</td>
+                        </tr>
+                      ) : (
+                        (users.length > 0 ? users : filteredUsers).map((user, index) => (
                         <tr key={user.id}>
                           <td>{index + 1}</td>
                           <td className={styles.typecell}>{user.id}</td>
                           <td className={styles.typecell}>{user.name}</td>
                           <td className={styles.typecell}>{user.email}</td>
-                          {/* <td>{user.lastName}</td> */}
                           <td className={styles.typecell}>{user.birthDay}</td>
-                          {/* <td>{user.address}</td> */}
-                          {/* <td style={{maxWidth:"80%"}}>{user.email}</td> */}
                           <td className={styles.typecell}>{user.phone}</td>
                           <td className={styles.typecell}>{user.typeUser}</td>
+                          <td className={styles.typecell}>
+                          {user.Locals.map((local, localIndex) => (
+                          <span key={localIndex}>
+                            {local.local}{localIndex < user.Locals.length - 1 ? ', ' : ''}
+                          </span>))}
+                          </td>
                           <td className={styles.typecell}>
                           {user.Positions.map((position, posIndex) => (
                           <span key={posIndex}>
                             {position.position}{posIndex < user.Positions.length - 1 ? ', ' : ''}
                           </span>))}
                           </td>
-                          {/* <td>{user.createdAt}</td> */}
                           <td>
-                            <button style={{marginTop:"5px"}} onClick={() => handleDeleteUser(user.id)} className={styles.delete}>Borrar usuario</button>
-                            {/* <NavLink to={`/admindashboard/${user.id}`}><button style={{marginTop:"5px"}} className={styles.see}>Ver publicaciones</button></NavLink> */}
-                            <button style={{marginTop:"5px"}}onClick={()=>handleUpdateUser(user.id)} className={styles.type}>Cambiar Tipo</button>
+                            <button style={{marginTop:"5px"}} onClick={()=>handleUpdateUser(user.id)} className={styles.type}>Editar</button>
                           </td>
                         </tr>
-                      ))}
+                      ))
+                      )}
                     </tbody>
                 </Table>
+                
     </div>
   );
 }

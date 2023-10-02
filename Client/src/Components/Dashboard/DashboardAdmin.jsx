@@ -3,19 +3,32 @@ import { useEffect,useState } from 'react';
 import { getAllUsers } from '../../Redux/actions';
 import { Link } from 'react-router-dom';
 import UserTable from './UserTable/UserTable';
-import ApplyWorkTable from './applyWorkTable/ApplyWorkTable';
+import ApplyWorkTable from './ApplyWorkTable/ApplyWorkTable';
 import ConvocationsTable from './ConvocationsTable/ConvocationsTable'
 import styles from './DashboardAdmin.module.css'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import SearchBarUser from './searchBar/searchBarUser/searchBarUser';
+import FiltersUsers from '../Filters/FiltersUsers/FiltersUsers';
 
 const DashboardAdmin = () =>{
     const dispatch = useDispatch()
     const dbUsers = useSelector((state) => state.allUsers)
+    const filteredUsers  = useSelector((state) => state.filteredUsers)
     //AL RENDERIZAR DASHBOARD CARGO ALLUSERS CON USUARIOS Y ESTADO LOCAL TAMBIEN
     
     const [users, setUsers] = useState([]); // Estado de los usuarios
     const [showUsers,setShowUsers] = useState(false)
+    const [searchResults, setSearchResults] = useState([]);
+    const [filterValues, setFilterValues] = useState({
+      local: '',
+      department: '',
+      position: '',
+      orden:''
+    });
+    
+
+
     useEffect(() => {
         dispatch(getAllUsers()).then((data)=>{setUsers(data.payload)});
     }, [dispatch]);
@@ -80,9 +93,6 @@ const DashboardAdmin = () =>{
 
     return(
         <div className={styles.page}>
-        {/* <div className={styles.navbar}>
-            <NavBar/> 
-        </div> */}
         <div className={styles.container}>
         <p className={styles.titulo}>DASHBOARD DE RRHH</p>
         <Row   md={3} className={styles.botones}>
@@ -103,11 +113,25 @@ const DashboardAdmin = () =>{
               <div className={styles.table}>
                 <div className={styles.header}>
                   <p>FUNCIONARIOS</p>
+                </div>
+                <div className={styles.mininavbar}>
+                  <div className={styles.filtersContainer}>
+                    <FiltersUsers filterValues={filterValues} setFilterValues={setFilterValues}/>
+                  </div>
+                  <div className={styles.searchBar}>
+                    <SearchBarUser setSearchResults={setSearchResults}/>
+                  </div>
                   <Link to="/admin-new-officer">
-                    <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
+                    <button type="button" className={styles.btnAgregar}>Agregar</button>
                   </Link>
                 </div>
-                <UserTable onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={users} />
+                <UserTable filteredUsers={filteredUsers} onUpdateUser={onUpdateUser} onUserDelete={onUserDelete} users={
+                      searchResults && searchResults.length > 0
+                        ? searchResults
+                        : filteredUsers.length > 0 // Cambia para usar filteredUsers
+                        ? filteredUsers
+                        : users // Si no hay filtros aplicados, muestra todos los usuarios 
+                }/>
               </div>
             </Col>
           </Row>}
@@ -131,13 +155,12 @@ const DashboardAdmin = () =>{
                   <Link to="/admin-new-convocation">
                     <button type="button" className={`btn btn-success ${styles.btnless}`}>Agregar</button>
                   </Link>
-                </div>
-                    
+                </div>   
                     <ConvocationsTable />
                   </div>
                 </Col>   
              </Row>
-         }
+            }
         </div>
         </div>
     </div>

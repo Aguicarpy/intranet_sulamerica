@@ -16,10 +16,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    local:{
-      type:DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
-    },
     salary:{
       type: DataTypes.DECIMAL(10,2),
       allowNull: false,

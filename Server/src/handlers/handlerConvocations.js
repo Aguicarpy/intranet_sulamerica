@@ -4,9 +4,9 @@ const postApplyJob = require('../controllers/convocations/postApplyJob');
 const getAllApplyJob = require('../controllers/convocations/getAllApplyJob');
 
 const handlerPostConvocation = async(req, res) => {
-    const {title, places, state, position} = req.body
+    const {title, places, state, position, local} = req.body
     try {
-        const createConvocation = await postNewConvocation(title, places, state, position)
+        const createConvocation = await postNewConvocation(title, places, state, position, local)
         return res.status(201).json({data: createConvocation});
     } catch (error) {
         error.message = 'Ocurrió un error inesperado al cargar la convocatoria'

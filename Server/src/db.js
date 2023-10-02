@@ -26,14 +26,21 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Officer, Position, Convocation, ApplyWork} = sequelize.models;
+const { Officer, Position, Local, Convocation, ApplyWork} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
 Position.belongsToMany(Officer, {through: 'officer_position'})
+Officer.belongsToMany(Local, { through: 'officer_local' }); 
+Local.belongsToMany(Officer, {through:'officer_local'})
 
 Position.hasMany(Convocation, {foreignKey: 'position_id', as: 'positionAdmin'})
 Convocation.belongsTo(Position, {foreignKey: 'position_id', as: 'position'})
+Local.hasMany(Convocation, {foreignKey: 'local_id', as: 'localAdmin'} )
+Convocation.belongsTo(Local, {foreignKey:'local_id', as:'local'})
+
+Position.belongsToMany(Local, { through: 'position_local' });
+Local.belongsToMany(Position, { through: 'position_local' });
 
 ApplyWork.belongsTo(Officer, { foreignKey: 'officer_id' });
 ApplyWork.belongsTo(Convocation, { foreignKey: 'convocation_id' });
