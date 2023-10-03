@@ -7,18 +7,17 @@ export const UserProfile = () => {
     const { id } = useParams();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
-  console.log(userProfile);
-//   console.log(dataPosition);
   const dataPosition = userProfile.Positions.map((cargo) => cargo.position)
   const dataDepartment = userProfile.Positions.map((cargo) => cargo.department)
 
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
 
   // console.log(dataPosition);
   const [userData, setUserData] = useState({
     name: userProfile.name,
     birthDay: userProfile.birthDay,
     phone: userProfile.phone,
+    imageUrl: userProfile.imageUrl,
     email: userProfile.email,
     position: dataPosition,
     department: dataDepartment
@@ -38,20 +37,20 @@ export const UserProfile = () => {
     return <div>Error: {userProfile.error}</div>;
   }
 
-  const { name, email, phone, position, department } = userData; // Accede a las propiedades del perfil
+  const { name, email, phone, position, department, imageUrl } = userData; // Accede a las propiedades del perfil
 //   console.log(userData); <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
               // className="rounded-circle img-fluid" />
 
-const handleImageChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImage(e.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-};
+// const handleImageChange = (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       setImage(e.target.result);
+//     };
+//     reader.readAsDataURL(file);
+//   }
+// };
   return (
     <section className="section" >
   <div className="_container_38bx6_27 py-5">
@@ -70,9 +69,9 @@ const handleImageChange = (event) => {
             {/* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
               className="rounded-circle img-fluid" /> */}
               <label htmlFor="fileInput" className="image-button">
-                  {image ? (
+                  {imageUrl ? (
                     <img
-                      src={image}
+                      src={imageUrl}
                       alt="Imagen seleccionada"
                       className="rounded-circle img-fluid"
                     />
@@ -88,7 +87,7 @@ const handleImageChange = (event) => {
                     id="fileInput"
                     accept="image/*"
                     style={{ display: "none" }}
-                    onChange={handleImageChange}
+                    // onChange={handleImageChange}
                   />
                 </label>
             <h5 className="my-3">{name}</h5>
