@@ -11,7 +11,7 @@ const Sequelize = require('sequelize')
 
 const postOfficer = async(req,res) => {
 
-    const {name, birthDay, phone, typeUser, email, position, locals, password} = req.body
+    const {name, birthDay, imageUrl, phone, typeUser, email, position, locals, password} = req.body
 
     try {
         if (!name || !birthDay || !phone || !typeUser || !email || !position || !password || !locals) {
@@ -28,7 +28,7 @@ const postOfficer = async(req,res) => {
           return res.status(400).json({ message: "'local' debe ser un array de sucursales" });
         }
 
-        const chargeNewOfficer = await postNewOfficer(name, birthDay, phone, typeUser, email, position, locals, password)
+        const chargeNewOfficer = await postNewOfficer(name, birthDay, imageUrl, phone, typeUser, email, position, locals, password)
         return res.status(201).json({Officer: chargeNewOfficer})
 
     } catch (error) {

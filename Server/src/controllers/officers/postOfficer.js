@@ -1,12 +1,13 @@
 const { Officer, Position, Local } = require('../../db')
 
-const postNewOfficer = async (name, birthDay, phone, typeUser, email, position, locals, password) => {
+const postNewOfficer = async (name, birthDay, imageUrl, phone, typeUser, email, position, locals, password) => {
   try {
     const [officer, created] = await Officer.findOrCreate({
       where: { email },
       defaults: {
         name,
         birthDay,
+        imageUrl,
         phone,
         typeUser,
         password,
