@@ -18,14 +18,16 @@ export const FormNewAddOfficer = () => {
   const alert = useSelector((state) => state.alerts); 
 
   const [errors, setErrors] = useState({}); // State para almacenar errores
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isLoadingImage, setIsLoadingImage] = useState(false); // Estado para indicar si se está cargando la imagen
+  // const [imagePreview, setImagePreview] = useState(null);
+  // const [isLoadingImage, setIsLoadingImage] = useState(false); // Estado para indicar si se está cargando la imagen
   const [positionsData, setPositionsData] = useState([]); // Aquí almacenaremos las opciones de posición
   const [localsData, setLocalsData] = useState([])
+  const [formSuccess, setFormSuccess] = useState(false);
   const {
     formState,
     name,
     birthDay,
+    imageUrl,
     phone,
     typeUser,
     position,
@@ -33,10 +35,16 @@ export const FormNewAddOfficer = () => {
     email,
     password,
     onInputChange,
-    setFormState
+    setFormState,
+    imagePreview,
+    isLoadingImage,
+    setIsPhotoSelected,
+    selectedFileName,
+    setFormSubmitted
   } = useForm({
     name: "",
     birthDay: "",
+    imageUrl: "",
     phone: "",
     typeUser: "Admin",
     position: "", // Inicialmente, establecemos una cadena vacía
@@ -51,7 +59,6 @@ export const FormNewAddOfficer = () => {
   useEffect(() => {
     dispatch(allLocals());
   }, [dispatch]);
-  console.log(dataLocal);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -70,25 +77,25 @@ export const FormNewAddOfficer = () => {
     }
   }, [dataLocal]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
 
-    setIsLoadingImage(true); // Activar el indicador de carga de imagen
+  //   setIsLoadingImage(true); // Activar el indicador de carga de imagen
 
-    // Verificar si se seleccionó un archivo y es una imagen
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
+  //   // Verificar si se seleccionó un archivo y es una imagen
+  //   if (file && file.type.startsWith("image/")) {
+  //     const reader = new FileReader();
 
-      reader.onload = (e) => {
-        // Cuando se cargue el archivo, establecer la vista previa de la imagen
-        setImagePreview(e.target.result);
-        setIsLoadingImage(false); // Desactivar el indicador de carga de imagen cuando esté completo
-      };
+  //     reader.onload = (e) => {
+  //       // Cuando se cargue el archivo, establecer la vista previa de la imagen
+  //       setImagePreview(e.target.result);
+  //       setIsLoadingImage(false); // Desactivar el indicador de carga de imagen cuando esté completo
+  //     };
 
-      // Leer el archivo como una URL de datos (base64)
-      reader.readAsDataURL(file);
-    }
-  };
+  //     // Leer el archivo como una URL de datos (base64)
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const validateForm = () => {
     const newErrors = {};
@@ -124,15 +131,20 @@ export const FormNewAddOfficer = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
+    setIsPhotoSelected(!!imageUrl);
     // Validar antes de enviar
     if (validateForm()) {
       const localsArray = Array.isArray(locals) ? locals : [locals];
+      dispatch(postOfficer(formState));
       setFormState({
         ...formState,
         locals: localsArray,
       });
-      dispatch(postOfficer(formState));
+      setIsPhotoSelected(false);
+      setFormSuccess(true);
+    } else{
+      setFormSubmitted(true)
+      setFormSuccess(false);
     }
   };
 
@@ -171,9 +183,10 @@ export const FormNewAddOfficer = () => {
               </div>
               <input
                 type="file"
+                name="imageUrl"
                 accept="image/*"
-                onChange={handleFileChange}
-                id="fileInput"
+                onChange={onInputChange}
+                id="file"
                 style={{ display: "none" }} // Esta línea oculta el input file
               />
               {isLoadingImage && (
@@ -181,8 +194,8 @@ export const FormNewAddOfficer = () => {
                   Loading... {/* Puedes agregar aquí un spinner de carga */}
                 </div>
               )}
-              <label htmlFor="fileInput" className="custom-file-upload">
-                <i className="btn btn-success">Cargar Imagen</i>
+              <label htmlFor="file" className="custom-file-upload">
+                <i className="btn btn-success"> {selectedFileName || "Cargar Imagen"}</i>
               </label>
               <br />
             </div>
