@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const {Officer} = require('../db')
+const {Officer, Position, Local} = require('../db')
 const authAccess = Router();
 const authenticateToken = require('../helpers/authenticateToken');
 const { SECRET_KEY_AUTH} = process.env
@@ -11,7 +11,7 @@ authAccess.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
     try {
-      const user = await Officer.findOne({ where: { email } });
+      const user = await Officer.findOne({ where:{ email }, include: [{ model: Position }, { model: Local }] });
       if (!user) {
         return res.status(401).json({ error: 'Nombre de usuario o contraseña incorrecta' });
       }
@@ -20,10 +20,11 @@ authAccess.post('/login', async (req, res) => {
       if (!passwordMatch) {
         return res.status(401).json({ error: 'Nombre de usuario o contraseña incorrecta' });
       }
-  
-      const userToken = { id: user.id, email: user.email };
+      const departments = user.Positions.map(position => position.department);
+      const userToken = { id: user.id, email: user.email, department: departments,};
+      
       const token = jwt.sign(userToken,  SECRET_KEY_AUTH);
-      return res.json({ id: userToken.id, email:userToken.email, token });
+      return res.json({ id: userToken.id, email:userToken.email, department: userToken.department, token });
     } catch (error) {
       return res.status(500).json({ error: 'Error al iniciar sesión' });
     }
