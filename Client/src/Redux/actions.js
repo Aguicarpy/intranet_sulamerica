@@ -22,6 +22,8 @@ export const POST_CONVOCATION_SUCCESS = "POST_CONVOCATION_SUCCESS"
 export const POST_CONVOCATION_FAILURE = "POST_CONVOCATION_FAILURE"
 export const SEND_APPLY_JOB = "SEND_APPLY_JOB"
 export const GET_ALL_APPLY_WORK = "GET_ALL_APPLY_WORK"
+export const ADD_EVENT_CALENDAR = "ADD_EVENT_CALENDAR"
+export const SET_USER_EVENTS = "SET_USER_EVENTS"
 
 export const login_success = (dataUser) => {
   return {
@@ -286,3 +288,37 @@ export function clearAlerts() {
       type: CLEAR_ALERTS_STATE,
     };
 }
+
+export const addEventCalendar = (eventData) => {
+  return async function(dispatch) {
+    const authToken = localStorage.getItem("userAuth");
+    const authTokenObject = JSON.parse(authToken);
+    const token = authTokenObject.token;
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(`${URL_BASE}/miscellaneous/event`, eventData, config)
+      console.log(response);
+      if (response.status === 201) {
+        dispatch({
+          type: ADD_EVENT_CALENDAR,
+          payload: response.data
+        });
+      }
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error);
+      throw new Error(error.message);
+    }
+  }
+};
+
+export const usersEventsCalendar = (events) => {
+  return {
+    type: SET_USER_EVENTS,
+    payload: events,
+  };
+};
+

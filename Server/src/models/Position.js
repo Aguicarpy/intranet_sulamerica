@@ -15,6 +15,7 @@ module.exports = (sequelize) => {
     position:{
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     salary:{
       type: DataTypes.DECIMAL(10,2),

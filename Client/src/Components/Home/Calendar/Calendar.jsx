@@ -1,52 +1,69 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import moment from 'moment-timezone';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styles from './Calendar.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addEventCalendar, clearAlerts, usersEventsCalendar } from '../../../Redux/actions';
+import { toast } from "react-toastify";
 
 const Calendar = () => {
-
-    const [eventos, setEventos] = useState([]);
+    const dispatch = useDispatch();
+    const userEvents = useSelector((state) => state.userEventsCalendar);
+    const idUser = useSelector((state) => state.dataUser);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    // const [fechaSeleccionada, setFechaSeleccionada] = useState('');
     const [nuevoEvento, setNuevoEvento] = useState({
         title: '',
         start: '',
-        end: '',
         description: ''
     });
-    // const agregarEvento = () => {
-    //     setMostrarFormulario(true);
-    // };
+    console.log(nuevoEvento);
+    // moment.tz.setDefault('America/Asuncion');
+
+    const fetchUserEvents = () => {
+        const authToken = localStorage.getItem("userAuth");
+        const authTokenObject = JSON.parse(authToken);
+        const token = authTokenObject.token;
+        if (!authToken) {
+            console.error('Token no encontrado en localStorage');
+            return;
+        }
+      
+        // Configuracion del header
+        const headers = {
+            Authorization: `Bearer ${token}`
+        };
+      
+        axios.get(`http://localhost:3015/miscellaneous/event?id=${authTokenObject.id}`, { headers })
+        .then((response) => {
+        if (response.status === 401) {
+            console.error('Usuario no autorizado');
+            throw new Error('Usuario no autorizado');
+        }
+        dispatch(usersEventsCalendar(response.data)); // Llama al action setUserEvents para almacenar los eventos en Redux
+        })
+        .catch((error) => {
+            console.error('Error al obtener los eventos del usuario:', error);
+        });
+    };
+
+    useEffect(() => {
+          fetchUserEvents();
+    }, [dispatch, idUser.id])
     
-    // useEffect(() => {
-    //     const calendarEl = document.getElementById('calendar');
-    //     const calendar = new FullCalendar(calendarEl, {
-    //         plugins: [dayGridPlugin, interactionPlugin],
-    //         initialView: 'dayGridMonth',
-    //         events: eventos,
-    //         selectable: true, // Habilita la selección de fechas
-    //         select: (info) => {
-    //             // Cuando se selecciona una fecha, muestra el formulario de creación de evento
-    //             // setMostrarFormulario(true);
-    //             setNuevoEvento({
-    //                 ...nuevoEvento,
-    //                 start: info.startStr, // Establece la fecha de inicio seleccionada
-    //                 end: info.endStr,     // Establece la fecha de fin seleccionada
-    //             });
-    //         },
-    //     });
-    //     setTimeout(() => {
-    //         document.getElementById('evento-title').focus();
-    //     }, 0);
-    // }, [eventos, nuevoEvento]);
     
     const handleDateClick = (arg) => {
         // Al hacer clic en una fecha, muestra el formulario de creación de evento
+        // setSelectedDate(arg.date);
         setNuevoEvento({
             title: '',
             start: arg.dateStr,
-            end: arg.dateStr,
+            description:''
         });
+        // setFechaSeleccionada(arg.dateStr);
         setMostrarFormulario(true)
     };
     const handleEventClick = (arg) => {
@@ -59,15 +76,41 @@ const Calendar = () => {
         // Muestra los detalles en un cuadro de diálogo o modal
         alert(`Título: ${titulo}\nDescripción: ${descripcion}`);
     };
+    const handleSelect = (info) => {
+        // Al seleccionar una fecha, muestra el formulario de creación de evento
+        setNuevoEvento({
+            title: '',
+            start: info.startStr, // Utiliza la fecha seleccionada
+            description: ''
+        });
+        setMostrarFormulario(true);
+    };
 
     const guardarEvento = () => {
-        // Agregar el nuevo evento al estado de eventos
-        setEventos([...eventos, nuevoEvento]);
-        // Reiniciar el formulario y ocultarlo
+        // Agrega el nuevo evento utilizando dispatch y la acción de Redux
+        dispatch(addEventCalendar(nuevoEvento, idUser.id)).then(()=>{
+          toast.success("Evento cargado", {
+            position: "top-center",
+            autoClose: 1500,
+            onClose:()=>{
+              dispatch(clearAlerts())
+            }
+          });
+        })
+        .catch((error) => {
+            console.error("Error al cargar el evento:", error);
+            alert("Error cargando el evento al calendario.");
+          });
+
+        // setNuevoEvento({
+        //     ...nuevoEvento,
+        //     start: selectedDate.toISOString(),
+        // });
+        // //   setSelectedDate(null);
         setNuevoEvento({
             title: '',
             start: '',
-            end: '',
+            description: ''
         });
         setMostrarFormulario(false);
     };
@@ -83,11 +126,17 @@ const Calendar = () => {
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
                 locale= 'es'
-                events={eventos}
+                events={userEvents}
                 selectable={true}
+                select={handleSelect}
                 dateClick={handleDateClick}
+                // timeZone="America/Asuncion"
                 eventClick={handleEventClick}
-                // Resto de la configuración del calendario
+                eventTimeFormat={{
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    meridiem: false
+                  }}
                 />
             </div>
             {mostrarFormulario && (
@@ -104,6 +153,24 @@ const Calendar = () => {
                             placeholder="Descripción del evento"
                             value={nuevoEvento.description}
                             onChange={(e) => setNuevoEvento({ ...nuevoEvento, description: e.target.value })}
+                        />
+                        <input
+                            type="date"
+                            value={nuevoEvento.start ? moment(nuevoEvento.start).format('YYYY-MM-DD') : ''}
+                            readOnly
+                        />
+                        <input
+                            type="time"
+                            value={nuevoEvento.start ? moment(nuevoEvento.start).format('HH:mm') : ''}
+                            onChange={(e) => {
+                                const selectedDate = nuevoEvento.start ? moment(nuevoEvento.start) : moment();
+                                const newTime = moment(e.target.value, 'HH:mm');
+                                const updatedDateTime = selectedDate.set({
+                                    hour: newTime.get('hour'),
+                                    minute: newTime.get('minute'),
+                                });
+                                setNuevoEvento({ ...nuevoEvento, start: updatedDateTime.toDate() });
+                            }}
                         />
                         <button onClick={guardarEvento}>Guardar</button>
                     </div>

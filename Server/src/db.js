@@ -26,7 +26,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Officer, Position, Local, Convocation, ApplyWork} = sequelize.models;
+const { Officer, Position, Local, Convocation, ApplyWork, Event} = sequelize.models;
 
 // Aca vendrian las relaciones
 Officer.belongsToMany(Position, {through: 'officer_position', timestamps: false})
@@ -44,6 +44,9 @@ Local.belongsToMany(Position, { through: 'position_local' });
 
 ApplyWork.belongsTo(Officer, { foreignKey: 'officer_id' });
 ApplyWork.belongsTo(Convocation, { foreignKey: 'convocation_id' });
+
+Officer.hasMany(Event, {foreignKey: 'officer_id'})
+Event.belongsTo(Officer, {foreignKey: 'officer_id'})
 
 module.exports = {
   ...sequelize.models,
