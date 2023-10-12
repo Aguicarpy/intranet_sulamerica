@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction';
 import styles from './Calendar.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,6 +66,10 @@ const Calendar = () => {
         });
         // setFechaSeleccionada(arg.dateStr);
         setMostrarFormulario(true)
+        const formContainer = document.querySelector(`.${styles.formContainer}`);
+    if (formContainer) {
+        formContainer.classList.add(styles.formVisible);
+    }
     };
     const handleEventClick = (arg) => {
         const eventoSeleccionado = arg.event;
@@ -113,13 +118,28 @@ const Calendar = () => {
             description: ''
         });
         setMostrarFormulario(false);
+        const formContainer = document.querySelector(`.${styles.formContainer}`);
+        if (formContainer) {
+            formContainer.classList.remove(styles.formVisible);
+        }
     };
 
+    const closeForm = () => {
+        // Cierra el formulario y limpia los valores
+        setMostrarFormulario(false);
+        setNuevoEvento({
+            title: '',
+            start: '',
+            description: ''
+        });
+    };
 
     const clasesCombinadas = `${styles.toolbar} ${styles.event} ${styles.day }`;
     return (
+        <>
+
+            <h2 className={styles.title}>Calendario de Eventos</h2>
         <div className={styles.calendarContainer}>
-            <h2 className={styles.title}>Calendario de Tareas</h2>
             <div id="calendar"></div>
             <div className={clasesCombinadas}>
             <FullCalendar
@@ -173,10 +193,12 @@ const Calendar = () => {
                             }}
                         />
                         <button onClick={guardarEvento}>Guardar</button>
+                        <button onClick={closeForm}>Cancelar</button>
                     </div>
                 </div>
             )}
         </div>
+        </>
     );
 };
 
