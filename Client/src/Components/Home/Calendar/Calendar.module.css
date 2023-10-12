@@ -1,6 +1,6 @@
 .calendarContainer {
     width: 100% !important;
-    max-width: 800px !important;
+    max-width: 3000px !important;
     margin: 0 auto !important;
     font-family: Arial, sans-serif !important;
     position: relative;
@@ -42,7 +42,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente */
+    /* background-color: rgba(189, 26, 26, 0.3); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,4 +56,60 @@
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    /* Agrega una transición de desvanecimiento y deslizamiento */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+
+    /* Ajusta el ancho y el margen del formulario en función del calendario */
+    width: 80%;
+    max-width: 400px;
+
+    /* Define un ancho máximo para pantallas pequeñas */
+    @media (max-width: 480px) {
+        width: 100%;
+        margin: 0 10px;
+    }
+}
+
+/* Establece la clase visible para mostrar el formulario con la transición */
+.formVisible  {
+    opacity: 1;
+    transform: translate(0);
+}
+
+.formContainer input, .formContainer button {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.formContainer button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.formContainer button:hover {
+    background-color: #2588c7;
+}
+
+.fullCalendar {
+    /* Agrega los estilos que desees para el calendario aquí */
+    /* Por ejemplo, puedes ajustar el tamaño, el fondo, los márgenes, etc. */
+    width: 100%;
+    background-color: white;
+    margin: 0 auto;
+    /* Agrega más estilos según tus preferencias */
 }
