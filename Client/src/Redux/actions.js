@@ -301,7 +301,6 @@ export const addEventCalendar = (eventData) => {
         },
       };
       const response = await axios.post(`${URL_BASE}/miscellaneous/event`, eventData, config)
-      console.log(response);
       if (response.status === 201) {
         dispatch({
           type: ADD_EVENT_CALENDAR,

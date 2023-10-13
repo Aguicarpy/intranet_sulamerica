@@ -7,7 +7,7 @@ import rootReducer from "./reducer";
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["dataUser", "loginUser"],
+    whitelist: ["dataUser", "loginUser", "userEventsCalendar"],
     // blacklist:["userLogedIn"]
   };
   const persistedReducer = persistReducer(persistConfig, rootReducer);

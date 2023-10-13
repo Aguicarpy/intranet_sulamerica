@@ -1,21 +1,21 @@
 const { Event, Officer } = require('../../../db')
+const { Op } = require('sequelize');
 
-const getAllEvents = async(id) => {
+const getAllEvents = async(id, area) => {
     try {
-        const allEvents = await Event.findAll({ where: {officer_id: id} }
-        //     {
-        //     include: {
-        //         model: Officer,
-        //         attributes: ['email'],
-        //         through: {
-        //             attributes: [],
-        //           },
-        //     }
-        // }
-        )
+        const allEvents = await Event.findAll({
+            where: {
+              [Op.or]: [
+                { officer_id: id },  // Eventos del usuario actual
+                { position_id: area } // Eventos de otros usuarios en la misma área
+              ]
+            }
+          })
+
         return allEvents
     } catch (error) {
-        throw new Error('Error al acceder a todos los eventos')        
+        console.error('Error de Sequelize:', error); 
+        throw error;      
     }
 }
 
