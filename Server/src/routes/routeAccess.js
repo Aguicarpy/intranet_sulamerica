@@ -15,12 +15,12 @@ authAccess.post('/login', async (req, res) => {
       if (!user) {
         return res.status(401).json({ error: 'Nombre de usuario o contraseña incorrecta' });
       }
-  
+      
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         return res.status(401).json({ error: 'Nombre de usuario o contraseña incorrecta' });
       }
-      const departments = user.Positions.map(position => position.department);
+      const departments = user.Positions.map(position => position.id);
       const userToken = { id: user.id, email: user.email, department: departments,};
       
       const token = jwt.sign(userToken,  SECRET_KEY_AUTH);

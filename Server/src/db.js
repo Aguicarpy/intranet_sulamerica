@@ -47,6 +47,8 @@ ApplyWork.belongsTo(Convocation, { foreignKey: 'convocation_id' });
 
 Officer.hasMany(Event, {foreignKey: 'officer_id'})
 Event.belongsTo(Officer, {foreignKey: 'officer_id'})
+Event.belongsTo(Position, { foreignKey: 'position_id'});
+Position.hasMany(Event, { foreignKey: 'position_id' });
 
 module.exports = {
   ...sequelize.models,

@@ -15,19 +15,17 @@ const Calendar = () => {
     const userEvents = useSelector((state) => state.userEventsCalendar);
     const idUser = useSelector((state) => state.dataUser);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    // const [fechaSeleccionada, setFechaSeleccionada] = useState('');
     const [nuevoEvento, setNuevoEvento] = useState({
         title: '',
         start: '',
         description: ''
     });
-    console.log(nuevoEvento);
-    // moment.tz.setDefault('America/Asuncion');
 
     const fetchUserEvents = () => {
         const authToken = localStorage.getItem("userAuth");
         const authTokenObject = JSON.parse(authToken);
         const token = authTokenObject.token;
+        const userArea = authTokenObject.department;
         if (!authToken) {
             console.error('Token no encontrado en localStorage');
             return;
@@ -38,7 +36,7 @@ const Calendar = () => {
             Authorization: `Bearer ${token}`
         };
       
-        axios.get(`http://localhost:3015/miscellaneous/event?id=${authTokenObject.id}`, { headers })
+        axios.get(`http://localhost:3015/miscellaneous/event?id=${idUser.id}&area=${userArea}`, { headers })
         .then((response) => {
         if (response.status === 401) {
             console.error('Usuario no autorizado');
@@ -53,18 +51,15 @@ const Calendar = () => {
 
     useEffect(() => {
           fetchUserEvents();
-    }, [dispatch, idUser.id])
-    
+    }, [])
     
     const handleDateClick = (arg) => {
         // Al hacer clic en una fecha, muestra el formulario de creación de evento
-        // setSelectedDate(arg.date);
         setNuevoEvento({
             title: '',
             start: arg.dateStr,
             description:''
         });
-        // setFechaSeleccionada(arg.dateStr);
         setMostrarFormulario(true)
         const formContainer = document.querySelector(`.${styles.formContainer}`);
     if (formContainer) {
@@ -82,17 +77,15 @@ const Calendar = () => {
         alert(`Título: ${titulo}\nDescripción: ${descripcion}`);
     };
     const handleSelect = (info) => {
-        // Al seleccionar una fecha, muestra el formulario de creación de evento
         setNuevoEvento({
             title: '',
-            start: info.startStr, // Utiliza la fecha seleccionada
+            start: info.startStr,
             description: ''
         });
         setMostrarFormulario(true);
     };
 
     const guardarEvento = () => {
-        // Agrega el nuevo evento utilizando dispatch y la acción de Redux
         dispatch(addEventCalendar(nuevoEvento, idUser.id)).then(()=>{
           toast.success("Evento cargado", {
             position: "top-center",
@@ -106,12 +99,6 @@ const Calendar = () => {
             console.error("Error al cargar el evento:", error);
             alert("Error cargando el evento al calendario.");
           });
-
-        // setNuevoEvento({
-        //     ...nuevoEvento,
-        //     start: selectedDate.toISOString(),
-        // });
-        // //   setSelectedDate(null);
         setNuevoEvento({
             title: '',
             start: '',
@@ -133,6 +120,10 @@ const Calendar = () => {
             description: ''
         });
     };
+    const userDepartment = idUser.Positions.map((area) => area.department)[0]
+    const filteredEvents = userEvents.filter((event) => {
+        return event.officer_id === idUser.id || event.department === userDepartment;
+      });
 
     const clasesCombinadas = `${styles.toolbar} ${styles.event} ${styles.day }`;
     return (
@@ -146,11 +137,10 @@ const Calendar = () => {
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
                 locale= 'es'
-                events={userEvents}
+                events={filteredEvents}
                 selectable={true}
                 select={handleSelect}
                 dateClick={handleDateClick}
-                // timeZone="America/Asuncion"
                 eventClick={handleEventClick}
                 eventTimeFormat={{
                     hour: '2-digit',

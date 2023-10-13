@@ -13,6 +13,10 @@ module.exports = (sequelize) => {
     description: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
+    department: {
+      type: DataTypes.STRING, // O el tipo de dato correspondiente
+      allowNull: false,
+    },
   });
 };

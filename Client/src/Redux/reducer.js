@@ -137,7 +137,7 @@ const rootReducer = (state = initialState, action) => {
       case SET_USER_EVENTS:
       return {
         ...state,
-        userEventsCalendar: action.payload,
+        userEventsCalendar: [...state.userEventsCalendar, action.payload],
       };
       default:
         return {
