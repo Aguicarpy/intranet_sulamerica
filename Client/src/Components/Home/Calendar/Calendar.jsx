@@ -3,16 +3,16 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction';
 import styles from './Calendar.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addEventCalendar, clearAlerts, usersEventsCalendar } from '../../../Redux/actions';
+import { addEventCalendar, clearAlerts, usersEventsCalendar, holidaysCalendar } from '../../../Redux/actions';
 import { toast } from "react-toastify";
 
 const Calendar = () => {
     const dispatch = useDispatch();
     const userEvents = useSelector((state) => state.userEventsCalendar);
+    const holidaysData = useSelector((state) => state.holidaysCalendar);
     const idUser = useSelector((state) => state.dataUser);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [nuevoEvento, setNuevoEvento] = useState({
@@ -49,8 +49,25 @@ const Calendar = () => {
         });
     };
 
+    const fetchDateHolidays = () => {
+        try {
+            axios.get("http://localhost:3015/miscellaneous/event/holidays")
+            .then((response) => {
+                if (response.status === 401) {
+                    console.error('Data invalida');
+                    throw new Error('Data invalida');
+                }
+                dispatch(holidaysCalendar(response.data)); // Llama al action setUserEvents para almacenar los eventos en Redux
+                })
+            
+        } catch (error) {
+            console.error('Error al obtener los feriados: ', error);
+        }
+    }
+
     useEffect(() => {
           fetchUserEvents();
+          fetchDateHolidays();
     }, [])
     
     const handleDateClick = (arg) => {
@@ -121,9 +138,10 @@ const Calendar = () => {
         });
     };
     const userDepartment = idUser.Positions.map((area) => area.department)[0]
-    const filteredEvents = userEvents.filter((event) => {
+    const filteredEventsForArea = userEvents.filter((event) => {
         return event.officer_id === idUser.id || event.department === userDepartment;
       });
+    const filteredEvents = filteredEventsForArea.concat(holidaysData)
 
     const clasesCombinadas = `${styles.toolbar} ${styles.event} ${styles.day }`;
     return (

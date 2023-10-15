@@ -1,5 +1,6 @@
 const postEventCalendar = require('../controllers/miscellaneous/calendar/postEventCalendar')
 const getAllEvents = require('../controllers/miscellaneous/calendar/getAllEvent')
+const getApiHolidays = require('../controllers/miscellaneous/calendar/getApiHolidays')
 
 const handlerPostEventCalendar = async(req, res) => {
     const { title, description, start } = req.body
@@ -24,4 +25,13 @@ const handlerAllEvents = async(req, res) => {
     }
 }
 
-module.exports = {handlerPostEventCalendar, handlerAllEvents}
+const handlerHolidaysCalendar = async(req, res) =>{
+    try {
+        const dataHolidays = await getApiHolidays()
+        return res.status(200).json(dataHolidays)
+    } catch (error) {
+        return res.status(500).json({error: error.message}) 
+    }
+}
+
+module.exports = {handlerPostEventCalendar, handlerAllEvents, handlerHolidaysCalendar}

@@ -24,6 +24,7 @@ export const SEND_APPLY_JOB = "SEND_APPLY_JOB"
 export const GET_ALL_APPLY_WORK = "GET_ALL_APPLY_WORK"
 export const ADD_EVENT_CALENDAR = "ADD_EVENT_CALENDAR"
 export const SET_USER_EVENTS = "SET_USER_EVENTS"
+export const HOLIDAYS_CALENDAR = "HOLIDAYS_CALENDAR"
 
 export const login_success = (dataUser) => {
   return {
@@ -318,6 +319,13 @@ export const usersEventsCalendar = (events) => {
   return {
     type: SET_USER_EVENTS,
     payload: events,
+  };
+};
+
+export const holidaysCalendar = (holidays) => {
+  return {
+    type: HOLIDAYS_CALENDAR,
+    payload: holidays,
   };
 };
 
