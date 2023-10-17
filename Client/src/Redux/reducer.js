@@ -2,13 +2,14 @@ import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, 
   DELETE_USER, CHANGE_USER_TYPE, GET_OFFICER_BY_NAME, APPLY_FILTERS_SUCCESS, APPLY_FILTERS_FAILURE,
   CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE, GET_ALL_APPLY_WORK, 
   POST_CONVOCATION_SUCCESS, POST_CONVOCATION_FAILURE, ADD_EVENT_CALENDAR, SET_USER_EVENTS,
-  HOLIDAYS_CALENDAR} from './actions';
+  HOLIDAYS_CALENDAR, USER_APPLY} from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
   let initialState = {
     allUsers: [],
     dataUser: {},
     allApplyWorks: [],
+    userApplyWorks: [],
     getConvocations: [],
     filteredUsers: [],
     alerts: "",
@@ -129,6 +130,13 @@ const rootReducer = (state = initialState, action) => {
           allApplyWorks: action.payload
         }
       }
+      case USER_APPLY: {
+        return {
+          ...state,
+          userApplyWorks: action.payload
+        }
+      };
+      
       case ADD_EVENT_CALENDAR:
       return {
         ...state,

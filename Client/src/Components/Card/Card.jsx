@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
-import { getAllConvocations, sendApplyJob, clearAlerts } from "../../Redux/actions";
+import { getAllConvocations, sendApplyJob, setUserApplyJob, clearAlerts } from "../../Redux/actions";
 import "./../Convocations/Convocations.less";
-import { Link } from "react-router-dom"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Card() {
   const convocations = useSelector((state) => state.getConvocations);
+  const apply = useSelector((state) => state.userApplyWorks);
+  console.log(apply);
   const user = useSelector((state) => state.dataUser);
   const dispatch = useDispatch();
   // const dispatchAppliedConvocations = useDispatch();
@@ -25,9 +27,35 @@ function Card() {
    useEffect(() => {
     const userAppliedConvocations = JSON.parse(localStorage.getItem(`appliedConvocations_${user.id}`)) || {};
     setApplyToWork(userAppliedConvocations);
+    fetchSendJob()
   }, [user.id]);
   
+  const fetchSendJob = () => {
+    const authToken = localStorage.getItem("userAuth");
+    const authTokenObject = JSON.parse(authToken);
+    const token = authTokenObject.token;
+    if (!authToken) {
+        console.error('Token no encontrado en localStorage');
+        return;
+    }
   
+    // Configuracion del header
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+  
+    axios.get(`http://localhost:3015/convocations/applyjobUser?id=${authTokenObject.id}`, { headers })
+    .then((response) => {
+    if (response.status === 401) {
+        console.error('Usuario no autorizado');
+        throw new Error('Usuario no autorizado');
+    }
+    dispatch(setUserApplyJob(response.data)); // Llama al action setUserEvents para almacenar los eventos en Redux
+    })
+    .catch((error) => {
+        console.error('Error al obtener las convocatorias enviadas por el usuario:', error);
+    });
+};
   
   const handlerSendJob = (officerId, convocationId) => {
     // Verificar si el usuario ya se ha postulado a esta convocatoria

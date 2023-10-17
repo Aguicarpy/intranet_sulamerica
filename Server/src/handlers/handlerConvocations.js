@@ -1,7 +1,8 @@
 const postNewConvocation = require('../controllers/convocations/postNewConvocation');
 const getAllConvocations = require('../controllers/convocations/getAllConvocations');
 const postApplyJob = require('../controllers/convocations/postApplyJob');
-const getAllApplyJob = require('../controllers/convocations/getAllApplyJob');
+const getUserApplyJob = require('../controllers/convocations/getUserApplyJob');
+const getAllApplyJob = require('../controllers/convocations/getAllApplyJob')
 
 const handlerPostConvocation = async(req, res) => {
     const {title, places, state, position, local} = req.body
@@ -36,6 +37,15 @@ const handlerApplyJob = async(req, res) => {
 }
 
 
+const handlerUserApplications = async(req, res) => {
+    const id = req.user.id
+    try {
+        const allDataApplycations = await getUserApplyJob(id);
+        return res.status(200).json(allDataApplycations)
+    } catch (error) {
+        return res.status(500).json({ error: 'Error al acceder a las postulaciones' });  
+    }
+}
 const handlerAllApplications = async(req, res) => {
     try {
         const allDataApplycations = await getAllApplyJob();
@@ -47,4 +57,4 @@ const handlerAllApplications = async(req, res) => {
 
 
 
-module.exports = { handlerPostConvocation, handlerAllConvocations, handlerApplyJob, handlerAllApplications}
+module.exports = { handlerPostConvocation, handlerAllConvocations, handlerApplyJob, handlerUserApplications, handlerAllApplications}
