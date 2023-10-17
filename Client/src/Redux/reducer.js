@@ -24,19 +24,19 @@ import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, 
   
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+      case LOGIN_SUCCESS:
       return {
         ...state,
         loginUser: true,
         dataUser: action.payload,
       };
-    case GET_DATA:
+      case GET_DATA:
       return {
         ...state,
         loginUser: true,
         dataUser: action.payload,
       };
-    case USER_LOGOUT:
+      case USER_LOGOUT:
       return {
         ...state,
         loginUser: false,
@@ -72,7 +72,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         allUsers: action.payload || [],
       };
-    case APPLY_FILTERS_SUCCESS:
+      case APPLY_FILTERS_SUCCESS:
       return {
         ...state,
         filteredUsers: action.payload,
@@ -143,10 +143,14 @@ const rootReducer = (state = initialState, action) => {
         userEventsCalendar: [...state.userEventsCalendar, action.payload],
       };
       case SET_USER_EVENTS:
-      return {
-        ...state,
-        userEventsCalendar: [...state.userEventsCalendar, action.payload],
-      };
+        if (state.userEventsCalendar.length === 0) {
+        return {
+          ...state,
+          userEventsCalendar: action.payload,
+        };
+      } else {
+      return state; // No agrega eventos si ya hay eventos existentes.
+      }
       case HOLIDAYS_CALENDAR:
       return {
         ...state,
