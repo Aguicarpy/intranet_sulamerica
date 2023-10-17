@@ -106,8 +106,8 @@ function Card() {
                 <span className="right"></span>
               </a>
               <h2>
+              <div style={{ minHeight: "16px" }}></div>
                 {convocation.title}
-                <small>Image from unsplash.com</small>
               </h2>
             </div>
             <div
