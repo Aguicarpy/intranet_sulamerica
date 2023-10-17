@@ -25,6 +25,7 @@ export const GET_ALL_APPLY_WORK = "GET_ALL_APPLY_WORK"
 export const ADD_EVENT_CALENDAR = "ADD_EVENT_CALENDAR"
 export const SET_USER_EVENTS = "SET_USER_EVENTS"
 export const HOLIDAYS_CALENDAR = "HOLIDAYS_CALENDAR"
+export const USER_APPLY = "USER_APPLY"
 
 export const login_success = (dataUser) => {
   return {
@@ -273,7 +274,7 @@ export function sendApplyJob(officerId, convocationId) {
 export function allApplyWork() {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`${URL_BASE}/convocations/applyjob`);
+      const response = await axios.get(`${URL_BASE}/convocations/applyAlljobs`);
       return dispatch({
         type: GET_ALL_APPLY_WORK,
         payload: response.data,
@@ -283,6 +284,13 @@ export function allApplyWork() {
     }
   };
 }
+
+export const setUserApplyJob = (apply) => {
+  return {
+    type: USER_APPLY,
+    payload: apply,
+  };
+};
 
 export function clearAlerts() {
     return {
