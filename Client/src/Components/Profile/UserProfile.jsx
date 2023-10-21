@@ -1,34 +1,225 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { updateUser, clearAlerts} from "../../Redux/actions";
 import { useParams } from "react-router-dom";
 import "./UserProfile.less";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const UserProfile = () => {
-    const { id } = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.dataUser);
   const dataPosition = userProfile.Positions.map((cargo) => cargo.position)
+  console.log(userProfile);
   const dataDepartment = userProfile.Positions.map((cargo) => cargo.department)
+  const alert = useSelector(state=>state.alerts)
 
-  // const [image, setImage] = useState(null);
+  useEffect(() => {
+    if (alert) {
+      toast.info(alert, {
+        position: "top-center",
+        autoClose: 2000,
+        onClose:()=>{
+          dispatch(clearAlerts())
+        }
+      });
+    }
+  }, [alert]);
 
-  // console.log(dataPosition);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [cloudinaryImage, setCloudinaryImage] = useState("");
+  const [editPassword, setEditPassword] = useState(false);
+  const [isPhotoSelected, setIsPhotoSelected] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
     name: userProfile.name,
     birthDay: userProfile.birthDay,
     phone: userProfile.phone,
     imageUrl: userProfile.imageUrl,
     email: userProfile.email,
-    position: dataPosition,
-    department: dataDepartment
+    position: dataPosition.join(', '), // Convertir el array en una cadena legible
+    department: dataDepartment.join(', '), // Convertir el array en una cadena legible
+    userActualPassword: userProfile.userActualPassword || "",
+    userNewPasswordToDispatch: userProfile.userNewPasswordToDispatch || "",
+    userNewPassword: userProfile.userNewPassword || "",
+    DBpassword: userProfile.password || "",
   })
+  // console.log(userData.position);
+  // console.log(userData.department);
+  const [errors, setErrors] = useState({
+    name:"",
+    userNewPasswordToDispatch:"",
+    userNewPassword:"",
+    imageUrl:""
+  });
 
-//   console.log(userData);
-//   useEffect(() => {
-//     dispatch(login_officer(id));
-//     // dispatch(login_officer(id));
-//   }, [dispatch, id]);
+  const handleImageUpload = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "sulamerica"); // Usar el nombre de tu upload preset
+  
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dmc5nhv6t/image/upload", // Reemplaza "tu_cloud_name" con tu Cloud Name de Cloudinary
+        formData
+      );
+  
+      const imageUrl = response.data.secure_url;
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        imageUrl, // Actualizar la URL de la imagen en Cloudinary en el estado
+      }));
+    } catch (error) {
+      console.error("Error al cargar la imagen a Cloudinary:", error);
+    }
+  };
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        await handleImageUpload(file); // Llamar a la función para cargar la imagen a Cloudinary
+        setIsPhotoSelected(true);
+        setHasChanges(true);
+        setCloudinaryImage(file.name);
+      } catch (error) {
+        console.error("Error al cargar la imagen:", error);
+      }
+    } else {
+      setIsPhotoSelected(false);
+      setCloudinaryImage("");
+    }
+  };
+  const handleInputChange = async (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({ ...prevData, [name]: value }));
+    if (['userNewPasswordToDispatch', 'userNewPassword', 'imageUrl', 'name'].includes(name)) {
+      setHasChanges(true);
+      }
+  };
 
+  const handleShowClick = () => {
+    setIsEditing(true);
+  };
+  
+  const handleHideClick = () => {
+    setIsEditing(false);
+  };
+
+  const handleUpdateClick = async() => {
+    if (userData.DBpassword && userData.userActualPassword && userData.userNewPassword) {
+      if (userData.userNewPassword !== userData.userNewPasswordToDispatch) {
+        toast.error("Las contraseñas no coinciden", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      } else {
+        try {
+          setIsUpdating(true);
+          setIsEditing(true); // Mostrar el estado de edición
+  
+          // Enviar la solicitud de actualización al backend con los datos
+          const response = await dispatch(
+            updateUser(
+              userData.email,
+              userData.name,
+              userData.birthDay,
+              userData.phone,
+              userData.imageUrl,
+              userData.DBpassword,
+              userData.userActualPassword,
+              userData.userNewPassword,
+              userData.position,
+              userData.department
+            )
+          );
+  
+          // Manejar la respuesta del backend
+          if (response.status === 200) {
+            // Si la actualización fue exitosa, actualiza los datos en el estado local
+            const updatedUserData = {
+              ...userData,
+              userNewPassword: "",
+              userNewPasswordToDispatch: "",
+              userActualPassword: "",
+            };
+  
+            setUserData(updatedUserData);
+  
+            // Notifica al usuario sobre la actualización exitosa
+            toast.success("Usuario editado con éxito", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+          } else {
+            // Si el backend responde con un error, muestra un mensaje de error
+            toast.error(response.error, {
+              position: "top-center",
+              autoClose: 3000,
+            });
+          }
+        } catch (error) {
+          // Maneja errores generales
+          console.error("Error al actualizar el usuario:", error);
+        } finally {
+          setIsUpdating(false);
+          setIsEditing(false); // Vuelve al modo de visualización
+          setHasChanges(false);
+        }
+      }
+    } else {
+      try {
+        setIsEditing(true); // Mostrar el estado de edición
+  
+        // Enviar la solicitud de actualización al backend con los datos
+        const response = await dispatch(
+          updateUser(
+            userData.email,
+            userData.name,
+            userData.birthDay,
+            userData.phone,
+            userData.imageUrl,
+            userData.position,
+            userData.department
+          )
+        );
+  
+        // Manejar la respuesta del backend
+        if (response.status === 200) {
+          // Si la actualización fue exitosa, notifica al usuario
+          toast.success("Usuario editado con éxito", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+        } else {
+          // Si el backend responde con un error, muestra un mensaje de error
+          toast.error(response.error, {
+            position: "top-center",
+            autoClose: 3000,
+          });
+        }
+      } catch (error) {
+        // Maneja errores generales
+        console.error("Error al actualizar el usuario:", error);
+      } finally {
+        setIsUpdating(false);
+        setIsEditing(false); // Vuelve al modo de visualización
+        setHasChanges(false);
+      }
+    }
+  };
+
+  const handleShowEditPassword = ()=>{
+    if(editPassword){
+      setEditPassword(false)
+    }else if(!editPassword){
+      setEditPassword(true)
+    }
+  }
+
+
+  //CODIGO QUE YA ESTABA
   if (userProfile.loading) {
     return <div>Cargando...</div>;
   }
@@ -38,37 +229,38 @@ export const UserProfile = () => {
   }
 
   const { name, email, phone, position, department, imageUrl } = userData; // Accede a las propiedades del perfil
-//   console.log(userData); <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-              // className="rounded-circle img-fluid" />
 
-// const handleImageChange = (event) => {
-//   const file = event.target.files[0];
-//   if (file) {
-//     const reader = new FileReader();
-//     reader.onload = (e) => {
-//       setImage(e.target.result);
-//     };
-//     reader.readAsDataURL(file);
-//   }
-// };
+
   return (
-    <section className="section" >
-  <div className="_container_38bx6_27 py-5">
-    <div className="row">
-      <div className="col">
-        <nav aria-label="breadcrumb" className="bg-light rounded-3 p-3 mb-4">
-          Área Personal
-        </nav>
-      </div>
-    </div>
+    <section className="section">
+      <div className="_container_38bx6_27 py-5">
+        <div className="row">
+          <div className="col">
+            <nav aria-label="breadcrumb" className="bg-light rounded-3 p-3 mb-4">
+              Área Personal
+            </nav>
+          </div>
+        </div>
 
-    <div className="row">
-      <div className="col-lg-4">
-        <div className="card mb-4">
-          <div className="card-body text-center">
-            {/* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-              className="rounded-circle img-fluid" /> */}
-              <label htmlFor="fileInput" className="image-button">
+        <div className="row">
+          <div className="col-lg-4">
+            <div className="card mb-4">
+              <div className="card-body text-center">
+                <label htmlFor="fileInput" className="image-button">
+                  {isEditing ? (
+                    <>
+                    <input
+                      type="file"
+                      name='imageUrl'
+                      id="fileInput"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    {/* Muestra el nombre del archivo seleccionado */}
+                    {/* {isPhotoSelected && <p>{cloudinaryImage}</p>} */}
+                  </> 
+                  ) : null}
                   {imageUrl ? (
                     <img
                       src={imageUrl}
@@ -82,173 +274,251 @@ export const UserProfile = () => {
                       className="rounded-circle img-fluid"
                     />
                   )}
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    // onChange={handleImageChange}
-                  />
                 </label>
-            <h5 className="my-3">{name}</h5>
-
-            <p className="text-muted mb-1">{department}</p>
-            <p className="text-muted mb-4">{position}</p>
-            {/* <div className="d-flex justify-content-center mb-2">
-              <button type="button" className="btn btn-primary">Follow</button>
-              <button type="button" className="btn btn-outline-primary ms-1">Message</button>
-            </div> */}
+                <h5 className="my-3">{name}</h5>
+                <p className="text-muted mb-1">{department}</p>
+                <p className="text-muted mb-4">{position}</p>
+              </div>
+            </div>
           </div>
-        </div>
-        {/* <div className="card mb-4 mb-lg-0">
-          <div className="card-body p-0">
-            <ul className="list-group list-group-flush rounded-3">
-              <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i className="fas fa-globe fa-lg text-warning"></i>
-                <p className="mb-0">https://mdbootstrap.com</p>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i className="fab fa-github fa-lg" ></i>
-                <p className="mb-0">mdbootstrap</p>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i className="fab fa-twitter fa-lg" ></i>
-                <p className="mb-0">@mdbootstrap</p>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i className="fab fa-instagram fa-lg" ></i>
-                <p className="mb-0">mdbootstrap</p>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i className="fab fa-facebook-f fa-lg" ></i>
-                <p className="mb-0">mdbootstrap</p>
-              </li>
-            </ul>
-          </div>
-        </div> */}
-      </div>
-      <div className="col-lg-8">
-        <div className="card card-2 mb-4">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-sm-3">
-                <p className="mb-0">Nombre</p>
-              </div>
-              <div className="col-sm-9">
-                <p className="text-muted mb-0">{name}</p>
-              </div>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-sm-3">
-                <p className="mb-0">Email</p>
-              </div>
-              <div className="col-sm-9">
-                <p className="text-muted mb-0">{email}</p>
-              </div>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-sm-3">
-                <p className="mb-0">Teléfono</p>
-              </div>
-              <div className="col-sm-9">
-                <p className="text-muted mb-0">{phone}</p>
-              </div>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-sm-3">
-                <p className="mb-0">Profesión</p>
-              </div>
-              <div className="col-sm-9">
-                <p className="text-muted mb-0">{position}</p>
-              </div>
-            </div>
-            <hr/>
-            <div className="row">
-              <div className="col-sm-3">
-                <p className="mb-0">Área</p>
-              </div>
-              <div className="col-sm-9">
-                <p className="text-muted mb-0">{department}</p>
-              </div>
-            </div>
-            <hr />
-          </div>
-        </div>
-        <div className="row">
-          {/* <div className="col-md-6">
-            <div className="card mb-4 mb-md-0">
+          <div className="col-lg-8">
+            <div className="card card-2 mb-4">
               <div className="card-body">
-                <p className="mb-4"><span className="text-primary font-italic me-1">assigment</span> Project Status
-                </p>
-                <p className="mb-1" >Web Design</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar progress-bar_1" role="progressbar" aria-valuenow="80"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Website Markup</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar progress-bar_2" role="progressbar" aria-valuenow="72"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >One Page</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar progress-bar_3" role="progressbar" aria-valuenow="89"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Mobile Template</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar progress-bar_4" role="progressbar" aria-valuenow="55"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Backend API</p>
-                <div className="progress rounded mb-2" >
-                  <div className="progress-bar progress-bar_5" role="progressbar" aria-valuenow="66"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                {isEditing ? (
+                  // Modo de edición
+                  <>
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Nombre</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <input
+                          type="text"
+                          name="name"
+                          value={name}
+                          onChange={handleInputChange}
+                          className={`form-control ${errors.name && "is-invalid"}`}
+                        />
+                        {errors.name && (
+                          <div className="invalid-feedback">{errors.name}</div>
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Email</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <input
+                          type="text"
+                          name="email"
+                          value={email}
+                          onChange={handleInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Teléfono</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <input
+                          type="text"
+                          name="phone"
+                          value={phone}
+                          onChange={handleInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Profesión</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <input
+                          disabled
+                          type="text"
+                          name="position"
+                          value={position}
+                          onChange={handleInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    {/* Otros campos para edición */}
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Área</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <input
+                          disabled
+                          type="text"
+                          name="department"
+                          value={department}
+                          onChange={handleInputChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-sm-12">
+                        {editPassword && isEditing ? (
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div className="form-group">
+                            <p className="mb-0">Contraseña Actual:</p>
+                            <input
+                              type="password"
+                              name="userActualPassword"
+                              value={userData.userActualPassword}
+                              onChange={handleInputChange}
+                              className={`form-control `}
+                            />
+                          </div>
+                          <hr />
+                          <div className="form-group">
+                            <p className="mb-0">Contraseña Nueva:</p>
+                            <div className="input-container">
+                            <input
+                              type="password"
+                              name="userNewPassword"
+                              value={userData.userNewPassword}
+                              onChange={handleInputChange}
+                              className={`form-control ${errors.userNewPassword && "is-invalid"}`}
+                            />
+                            {errors.userNewPassword && (
+                              <div className="error-container">
+                                <div className="invalid-feedback">{errors.userNewPassword}</div>
+                              </div>
+                            )}
+                        </div>
+                          </div>
+                          <hr />
+                          <div className="form-group">
+                            <p className="mb-0">Repita Contraseña Nueva:</p>
+                            <div className="input-container">
+                            <input
+                              type="password"
+                              name="userNewPasswordToDispatch"
+                              value={userData.userNewPasswordToDispatch}
+                              onChange={handleInputChange}
+                              className={`form-control ${errors.userNewPasswordToDispatch && "is-invalid"}`}
+                            />
+                            {errors.userNewPasswordToDispatch && (
+                              <div className="error-container">
+                                <div className="invalid-feedback">{errors.userNewPasswordToDispatch}</div>
+                              </div>
+                            )}
+                            
+                            </div>
+                          </div>
+                          <hr />
+                        </div>
+                        ) : (
+                          <div>
+                            <p></p>
+                            <hr />
+                          </div>
+                        )}
+                          {userData.userNewPassword !== userData.userNewPasswordToDispatch && (
+                          <p style={{ color: "red", marginRight: "10px" }}>Las contraseñas no coinciden</p>
+                          )}
+                        {
+                        !errors.userNewPasswordToDispatch && !errors.userNewPassword && 
+                        userData.name && 
+                        
+                        <button disabled={!hasChanges || isUpdating} className="btn btn-primary me-2" onClick={handleUpdateClick}>Actualizar Datos</button>
+                        }
+                        <button
+                          className="btn btn-primary me-2"
+                          onClick={handleShowEditPassword}
+                          >
+                          Editar Contraseña
+                        </button>
+                        <button
+                          className="btn btn-primary me-2"
+                          onClick={handleHideClick}
+                        >
+                          Regresar
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Modo de visualización
+                  <>
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Nombre</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-muted mb-0">{name}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Email</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-muted mb-0">{email}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Teléfono</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-muted mb-0">{phone}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Profesión</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-muted mb-0">{position}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Área</p>
+                      </div>
+                      <div className="col-sm-9">
+                        <p className="text-muted mb-0">{department}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <button
+                          className="btn btn-primary"
+                          onClick={handleShowClick}
+                        >
+                          Editar Perfil
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-          </div> */}
-          {/* <div className="col-md-6">
-            <div className="card mb-4 mb-md-0">
-              <div className="card-body">
-                <p className="mb-4"><span className="text-primary font-italic me-1">assigment</span> Project Status
-                </p>
-                <p className="mb-1" >Web Design</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar" role="progressbar" aria-valuenow="80"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Website Markup</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar" role="progressbar" aria-valuenow="72"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >One Page</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar" role="progressbar" aria-valuenow="89"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Mobile Template</p>
-                <div className="progress rounded" >
-                  <div className="progress-bar" role="progressbar" aria-valuenow="55"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p className="mt-4 mb-1" >Backend API</p>
-                <div className="progress rounded mb-2" >
-                  <div className="progress-bar" role="progressbar" aria-valuenow="66"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+            <div className="row">
+              {/* Otras secciones */}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
   );
 };
 

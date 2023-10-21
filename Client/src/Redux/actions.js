@@ -13,6 +13,8 @@ export const GET_OFFICER_BY_NAME = "GET_OFFICER_BY_NAME"
 export const APPLY_FILTERS_SUCCESS = "APPLY_FILTERS_SUCCESS"
 export const APPLY_FILTERS_FAILURE = "APPLY_FILTERS_FAILURE"
 export const DELETE_USER = "DELETE_USER"
+export const OFFICER_UPDATE = "OFFICER_UPDATE"
+export const OFFICER_UPDATE_FAILURE = "OFFICER_UPDATE_FAILURE"
 export const CHANGE_USER_TYPE = "CHANGE_USER_TYPE"
 export const CLEAR_ALERTS_STATE = "CLEAR_ALERTS_STATE"
 export const GET_CONVOCATIONS = "GET_CONVOCATIONS";
@@ -128,6 +130,31 @@ export function deleteUser(id) {
       }
     } catch (error) {
       return error.message;
+    }
+  };
+}
+
+export function updateUser( email, name, birthDay, phone, imageUrl, DBpassword, userActualPassword, userNewPassword, position, department) {
+  return async function (dispatch) {
+    try {
+      const response = await axios.put(`${URL_BASE}/officers/userUpdate`, { email, name, birthDay, phone, imageUrl, DBpassword, userActualPassword, userNewPassword, position, department});
+      console.log(response);
+      if (response.status === 200) {
+        return dispatch({
+          type: OFFICER_UPDATE,
+          payload: response.data,
+          alert: "Usuario editado con exito",
+        });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        return dispatch({
+          type: OFFICER_UPDATE_FAILURE,
+          payload: error.response.data.error,
+        });
+      } else {
+        window.alert(error.message);
+      }
     }
   };
 }

@@ -1,7 +1,7 @@
 import { LOGIN_SUCCESS, GET_DATA, GET_USER_PROFILE, USER_LOGOUT, DATA_POSITION, DATA_LOCAL, GET_ALL_USERS,
-  DELETE_USER, CHANGE_USER_TYPE, GET_OFFICER_BY_NAME, APPLY_FILTERS_SUCCESS, APPLY_FILTERS_FAILURE,
-  CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE, GET_ALL_APPLY_WORK, 
-  POST_CONVOCATION_SUCCESS, POST_CONVOCATION_FAILURE, ADD_EVENT_CALENDAR, SET_USER_EVENTS,
+  DELETE_USER, OFFICER_UPDATE, OFFICER_UPDATE_FAILURE, CHANGE_USER_TYPE, GET_OFFICER_BY_NAME, APPLY_FILTERS_SUCCESS,
+  APPLY_FILTERS_FAILURE, CLEAR_ALERTS_STATE, GET_CONVOCATIONS,POST_OFFICER_SUCCESS, POST_OFFICER_FAILURE, 
+  GET_ALL_APPLY_WORK, POST_CONVOCATION_SUCCESS, POST_CONVOCATION_FAILURE, ADD_EVENT_CALENDAR, SET_USER_EVENTS,
   HOLIDAYS_CALENDAR, USER_APPLY} from './actions';
   
   const userLogedIn = localStorage.getItem("userLoged") === "false";
@@ -94,6 +94,17 @@ const rootReducer = (state = initialState, action) => {
         ...state, // al haber error seteo en false el estado
         userCreated: false,
         alerts: action.payload
+      };
+      case OFFICER_UPDATE:
+      return {
+        ...state,
+        dataUser: action.payload,
+        alerts: action.alert,
+      };
+      case OFFICER_UPDATE_FAILURE:
+      return {
+        ...state,
+        alerts: action.payload,
       };
       case POST_CONVOCATION_SUCCESS:
       return {

@@ -68,17 +68,21 @@ const getOfficerDataLogged = async(req, res) =>{
 }
 
 const updateOfficerData = async(req,res) => {
-    let {name, birthDay, phone, email, DBpassword, userActualPassword, userNewPassword} = req.body;
+    let {name, birthDay, imageUrl, phone, email, DBpassword, userActualPassword, userNewPassword, position, department} = req.body;
     try {
         if(!email){
             return res.status(400).json({ error: "Ingrese el Email" });
         } else {
-            let updateData = await modifyOfficer(name, birthDay, phone, email, DBpassword, userActualPassword, userNewPassword);
-            return res.status(200).json(updateData);
+            const updateData = await modifyOfficer(name, birthDay, imageUrl, phone, email, DBpassword, userActualPassword, userNewPassword, position, department);
+            if (updateData) {
+              return res.status(200).json(updateData);
+            } else {
+              return res.status(500).json({ error: "No se pudo actualizar los datos" });
+            }
         }
     } catch (error) {
-        error.message = 'Ocurrió un error inesperado al actualizar los datos'
-        return res.status(500).json({ error: error.message })
+      console.error("Error en el controlador:", error);
+      return res.status(500).json({ error: "Ocurrió un error inesperado al actualizar los datos" });
     }
 }
 
