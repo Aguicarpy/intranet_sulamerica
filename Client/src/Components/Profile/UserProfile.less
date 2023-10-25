@@ -137,6 +137,30 @@
     overflow: hidden;
 }
 
+.input-container {
+    max-height: 40px; /* Ajusta la altura máxima según tus necesidades */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+.invalid-feedback {
+  display: inline-block;  /* Muestra el mensaje de error en línea con el input */
+  vertical-align: top;   /* Alinea la parte superior del mensaje con la parte superior del input */
+  margin-left: 5px;      /* Agrega un pequeño margen a la izquierda para separar el mensaje del input */
+}
+
+.error-container {
+    margin-left: 5px; /* Agrega margen a la izquierda para separar el mensaje de error del input */
+}
+
+.error-message {
+    color: #d9534f; 
+    font-size: 14px;
+    margin-top: 5px; 
+    
+  }
+
 .fa-github{
     color: #333333;
 }
