@@ -105,6 +105,7 @@ export const UserProfile = () => {
   
   const handleHideClick = () => {
     setIsEditing(false);
+    setHasChanges(false);
   };
 
   const handleUpdateClick = async() => {
