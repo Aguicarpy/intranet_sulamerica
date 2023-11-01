@@ -1,12 +1,13 @@
 const express = require('express');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-const { Officer } = require('../db.js');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const axios = require('axios')
+const router = express.Router();
+
 const {
   CLOUD_NAME, API_KEY, API_SECRET
 } = process.env
-
-const router = express.Router();
 
 // Configurar Cloudinary
 cloudinary.config({
@@ -15,27 +16,45 @@ cloudinary.config({
   api_secret: API_SECRET
 });
 
-// Configurar Multer para gestionar la carga de archivos
-const storage = multer.diskStorage({});
-const upload = multer({ storage });
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'uploads',
+    format: (req, file) => ['jpg', 'jpeg', 'png'].includes(file.mimetype.split('/')[1]) ? 'jpg' : 'png',
+  },
+});
+const multerUpload = multer({ storage: storage });
 
-// Ruta para subir una imagen de mascota
-router.post('/upload', upload.single('imageUrl'), async (req, res) => {
-  const { imageUrl } = req.body;
+router.post('/upload', multerUpload.single('file'), async (req, res) => {
   try {
-    if (!imageUrl) {
-      return res.status(400).json({ error: 'No se ha proporcionado una imagen' });
-    }
-
-    const result = await cloudinary.uploader.upload(req.file.path);
-
-    // Guardar la URL de la imagen en la base de datos
-    const imgOfficer = await Officer.create({ imageUrl: result.secure_url });
-
-    return res.status(201).json(imgOfficer);
+    // La imagen se ha subido a Cloudinary, y req.file.path contiene la URL
+    res.json({ secure_url: req.file.path });
   } catch (error) {
-    return res.status(500).json({ error: 'Error al subir la imagen' });
+    console.error("Error al cargar la imagen a Cloudinary:", error);
+    res.status(500).json({ error: "Error al cargar la imagen" });
   }
 });
+
+// router.delete('/delete', async (req, res) => {
+//   try {
+//     const imageUrl = req.body.imageUrl;
+
+//     if (!imageUrl) {
+//       return res.status(400).json({ error: 'La URL de la imagen no se proporcionó' });
+//     }
+
+//     const result = await cloudinary.uploader.destroy(imageUrl);
+//     console.log('Eliminación exitosa:', result);
+
+//     if (result === 'ok') {
+//       res.status(200).json(result);
+//     } else {
+//       res.status(500).json({ error: 'Error al eliminar la imagen' });
+//     }
+//   } catch (error) {
+//     console.error('Error al eliminar la imagen en Cloudinary:', error);
+//     res.status(500).json({ error: 'Error al eliminar la imagen', details: error.message });
+//   }
+// });
 
 module.exports = router;

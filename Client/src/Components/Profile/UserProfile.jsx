@@ -4,6 +4,7 @@ import { updateUser, clearAlerts} from "../../Redux/actions";
 import { useParams } from "react-router-dom";
 import "./UserProfile.less";
 import axios from "axios";
+// const { CLOUD_NAME } = process.env;
 import { toast } from "react-toastify";
 
 export const UserProfile = () => {
@@ -59,38 +60,59 @@ export const UserProfile = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "sulamerica"); // Usar el nombre de tu upload preset
-  
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dmc5nhv6t/image/upload", // Reemplaza "tu_cloud_name" con tu Cloud Name de Cloudinary
-        formData
-      );
-  
-      const imageUrl = response.data.secure_url;
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        imageUrl, // Actualizar la URL de la imagen en Cloudinary en el estado
-      }));
+      formData.append("upload_preset", "sulamerica");
+
+      // Envía el archivo al servidor para que el servidor lo cargue en Cloudinary
+      const response = await axios.post("http://localhost:3015/imgOfficer/upload", formData);
+
+      if (response.data.secure_url) {
+        const imageUrl = response.data.secure_url;
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          imageUrl,
+        }));
+      }
     } catch (error) {
       console.error("Error al cargar la imagen a Cloudinary:", error);
     }
   };
+  
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    const maxImageSize = 200;
     if (file) {
-      try {
-        await handleImageUpload(file); // Llamar a la función para cargar la imagen a Cloudinary
-        setIsPhotoSelected(true);
-        setHasChanges(true);
-        setCloudinaryImage(file.name);
-      } catch (error) {
-        console.error("Error al cargar la imagen:", error);
-      }
+        // Verificar el tamaño máximo
+        if (file.size / 1024 <= maxImageSize) { // Convertir el tamaño a KB
+            // Verificar que la imagen sea cuadrada (ancho = alto)
+            if (file.width === file.height) {
+                try {
+                    await handleImageUpload(file); // Cargar la imagen si pasa las validaciones
+                    setIsPhotoSelected(true);
+                    setHasChanges(true);
+                    setCloudinaryImage(file.name);
+                } catch (error) {
+                    console.error("Error al cargar la imagen:", error);
+                }
+            } else {
+                // Notificar al usuario que la imagen no es cuadrada
+                toast.error("La imagen debe ser cuadrada para una foto de perfil", {
+                    position: "top-center",
+                    autoClose: 3000,
+                });
+            }
+        } else {
+            // Notificar al usuario que la imagen excede el tamaño máximo
+            toast.error("La imagen excede el tamaño máximo permitido", {
+                position: "top-center",
+                autoClose: 3000,
+            });
+        }
     } else {
-      setIsPhotoSelected(false);
-      setCloudinaryImage("");
+        setIsPhotoSelected(false);
+        setCloudinaryImage("");
     }
   };
+
   const handleInputChange = async (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({ ...prevData, [name]: value }));
@@ -266,7 +288,7 @@ export const UserProfile = () => {
                     <img
                       src={imageUrl}
                       alt="Imagen seleccionada"
-                      className="rounded-circle img-fluid"
+                      className="rounded-circle img-fluid profile-image"
                     />
                   ) : (
                     <img
