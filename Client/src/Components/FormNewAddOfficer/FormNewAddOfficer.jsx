@@ -77,25 +77,25 @@ export const FormNewAddOfficer = () => {
     }
   }, [dataLocal]);
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
 
-  //   setIsLoadingImage(true); // Activar el indicador de carga de imagen
+    setIsLoadingImage(true); // Activar el indicador de carga de imagen
 
-  //   // Verificar si se seleccionó un archivo y es una imagen
-  //   if (file && file.type.startsWith("image/")) {
-  //     const reader = new FileReader();
+    // Verificar si se seleccionó un archivo y es una imagen
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
 
-  //     reader.onload = (e) => {
-  //       // Cuando se cargue el archivo, establecer la vista previa de la imagen
-  //       setImagePreview(e.target.result);
-  //       setIsLoadingImage(false); // Desactivar el indicador de carga de imagen cuando esté completo
-  //     };
+      reader.onload = (e) => {
+        // Cuando se cargue el archivo, establecer la vista previa de la imagen
+        setImagePreview(e.target.result);
+        setIsLoadingImage(false); // Desactivar el indicador de carga de imagen cuando esté completo
+      };
 
-  //     // Leer el archivo como una URL de datos (base64)
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
+      // Leer el archivo como una URL de datos (base64)
+      reader.readAsDataURL(file);
+    }
+  };
 
   const validateForm = () => {
     const newErrors = {};

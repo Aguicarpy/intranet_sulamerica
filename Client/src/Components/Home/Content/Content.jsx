@@ -1,5 +1,6 @@
 import styles from './Content.module.css'
 import Calendar from '../Calendar/Calendar';
+import ChatApp from '../Chat/Chat';
 
 const Content = () => {
     return(
@@ -7,10 +8,10 @@ const Content = () => {
             <section className={styles.calendarSection}>
                 <Calendar />
             </section>
-            {/* <section className={styles.chatSection}>
-                <Chat />
+            <section>
+                <ChatApp />
             </section>
-            <section className={styles.quickAccessSection}>
+            {/* <section className={styles.quickAccessSection}>
                 <QuickAccess />
             </section> */}
         </div>

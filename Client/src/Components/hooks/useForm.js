@@ -26,25 +26,25 @@ export const useForm = (addUser) => {
     
         // Leer el archivo como una URL de datos (base64)
         reader.readAsDataURL(file);
-      }
+      } 
     };
 
     const handleImageUpload = async (file) => {
       try {
         const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "sulamerica"); // Usar el nombre de tu upload preset
-    
-        const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/dmc5nhv6t/image/upload", // Reemplazar "tu_cloud_name" con tu Cloud Name de Cloudinary
-          formData
-        );
-    
+      formData.append("file", file);
+      formData.append("upload_preset", "sulamerica");
+
+      // Envía el archivo al servidor para que el servidor lo cargue en Cloudinary
+      const response = await axios.post("http://localhost:3015/imgOfficer/upload", formData);
+
+      if (response.data.secure_url) {
         const imageUrl = response.data.secure_url;
         setFormState((prevFormData) => ({
           ...prevFormData,
-          imageUrl, // Actualizar la URL de la imagen en Cloudinary en el estado
+          imageUrl,
         }));
+      }
       } catch (error) {
         console.error("Error al cargar la imagen a Cloudinary:", error);
       }
