@@ -80,11 +80,17 @@ function ChatApp() {
                         key={index}
                         className={`${styles.message} ${message.sender_id === user.id ? styles.rightAlign : styles.leftAlign}`}
                     >
-                        <div>
-      <strong>{message.sender_name}:</strong>
-      <br />
-      {message.content}
-    </div>
+                      {index > 0 && message.sender_id === messages[index - 1].sender_id ? (
+        <div>
+          {message.content}
+        </div>
+      ) : (
+        <div>
+          <strong>{message.sender_name}:</strong>
+          <br />
+          {message.content}
+        </div>
+      )}
                     </div>
                 ))}
             </div>
