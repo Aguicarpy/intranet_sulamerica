@@ -1,18 +1,21 @@
-  /* Content.module.css */
-
-.main {
-  flex-grow: 1; /* Permite que el contenido ocupe todo el espacio disponible */
-  padding: 20px;
+.content {
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  background-color: #ffffff; /* Cambia el color de fondo según tu preferencia */
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  height: 100%;
+  padding: 20px;
 }
 
-h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
+.section {
+  flex: 1;
+  margin: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones para transformaciones y sombras */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Agrega bordes redondeados */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra suave */
 }
 
-p {
-  font-size: 18px;
-}
+.section:hover {
+  transform: scale(1.05); /* Escala la sección al pasar el cursor para un efecto de zoom */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}

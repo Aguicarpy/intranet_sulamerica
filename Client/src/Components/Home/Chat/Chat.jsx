@@ -74,6 +74,7 @@ function ChatApp() {
 
   return (
     <div className={styles.chatContainer}>
+      <h2 className={styles.title}>Chat</h2>
       <div className={styles.messageList} ref={messagesContainerRef}>
                 {messages.map((message, index) => (
                     <div
