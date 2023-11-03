@@ -4,11 +4,11 @@ import ChatApp from '../Chat/Chat';
 
 const Content = () => {
     return(
-        <div className={styles.main}>
-            <section className={styles.calendarSection}>
+        <div className={styles.content}>
+            <section className={styles.section}>
                 <Calendar />
             </section>
-            <section>
+            <section className={styles.section}>
                 <ChatApp />
             </section>
             {/* <section className={styles.quickAccessSection}>

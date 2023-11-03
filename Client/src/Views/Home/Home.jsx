@@ -1,20 +1,10 @@
 import Content from "../../Components/Home/Content/Content";
-import Footer from "../../Components/Home/Footer/Footer";
-import NavBar from "../../Components/Home/NavBar/NavBar";
-
+import styles from './Home.module.css';
 
 const Home = () => {
     return(
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            {/* <header>
-                <NavBar />
-            </header> */}
-            <main>
-                <Content />
-            </main>
-            {/* <footer>
-                <Footer />
-            </footer> */}
+        <div>
+            <Content />
         </div>
     )
 }

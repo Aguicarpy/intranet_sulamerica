@@ -60,10 +60,10 @@ const handlerCreatePrivateChat = async(req, res) => {
 }
 
 const handlerSendMessage = async(req, res) => {
-    const { sender_id, content } = req.body;
+    const { sender_id, content, sender_name } = req.body;
     const { chat_id } = req.params
     try {
-        const newMessage = postSendMessage(chat_id, sender_id, content)
+        const newMessage = postSendMessage(chat_id, sender_id, content, sender_name)
         return res.status(201).json({data: newMessage})
     } catch (error) {
         return res.status(500).json({error: error.message}) 
