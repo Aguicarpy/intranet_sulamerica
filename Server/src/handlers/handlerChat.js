@@ -16,6 +16,7 @@ const io = socketIo(httpServer, {
   });
 
   const users = {};
+  const unreadMessages = {};
   // Configurar eventos de Socket.io
 io.on('connection', (socket) => {
     console.log('Usuario conectado');
@@ -45,9 +46,20 @@ io.on('connection', (socket) => {
         console.log('mensaje enviado servidor: ', newMessage);
         const alignment = sender_id === socket.id ? 'right' : 'left';
         // Emite el mensaje a todos los usuarios en el chat general
+        if (!unreadMessages[chat_id]) {
+          unreadMessages[chat_id] = [];
+        }
+        unreadMessages[chat_id].push({ newMessage, alignment });
         io.to('chatGeneral').emit('messageInChatGeneral', {newMessage, alignment });
       } catch (error) {
         console.error('Error al guardar el mensaje:', error);
+      }
+    });
+    
+    socket.on('loadUnreadMessages', (chatId, userId) => {
+      if (unreadMessages[chatId]) {
+        socket.emit('unreadMessages', unreadMessages[chatId]);
+        delete unreadMessages[chatId];
       }
     });
 
