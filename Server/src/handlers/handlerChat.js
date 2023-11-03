@@ -28,9 +28,9 @@ io.on('connection', (socket) => {
         users[socket.id] = userId;
         // Recupera los mensajes anteriores desde la base de datos
         const previousMessages = await getMessages(chatId, senderName);
-    
         // Emite los mensajes anteriores al usuario que se unió
         socket.emit('previousMessages', previousMessages);
+        console.log('Mensajes servidor: ', previousMessages);
       } catch (error) {
         console.error('Error al recuperar los mensajes anteriores:', error);
       }
@@ -38,12 +38,11 @@ io.on('connection', (socket) => {
 
   
     socket.on('sendMessageToChatGeneral', async(data) => {
-      const { content, chat_id, sender_name } = data;
+      const { content, chat_id, sender_name, sender_image } = data;
       const sender_id = users[socket.id]; 
       try {
-        const newMessage = await postSendMessage(chat_id, sender_id, content, sender_name  );
-        console.log(`Mensaje enviado en el servidor: 
-        ${newMessage}`);
+        const newMessage = await postSendMessage(chat_id, sender_id, content, sender_name, sender_image  );
+        console.log('mensaje enviado servidor: ', newMessage);
         const alignment = sender_id === socket.id ? 'right' : 'left';
         // Emite el mensaje a todos los usuarios en el chat general
         io.to('chatGeneral').emit('messageInChatGeneral', {newMessage, alignment });

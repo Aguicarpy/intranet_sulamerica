@@ -9,6 +9,10 @@ module.exports = (sequelize) => {
     sender_name: {
       type:DataTypes.STRING,
       allowNull: false
+    },
+    sender_image: {
+      type:DataTypes.STRING,
+      allowNull: false
     }
   },
   );

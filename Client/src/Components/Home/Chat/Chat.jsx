@@ -24,8 +24,7 @@ function ChatApp() {
     
         const messageInChatGeneralListener = (data) => {
           const newMessage = data.newMessage;
-          console.log(`Mensaje recibido en el cliente:
-          ${newMessage}`);
+          console.log('Mensaje enviado cliente: ', newMessage);
           // Determina la alineación en función del remitente
           const alignment = newMessage.sender_id === user.id ? 'right' : 'left';
           newMessage.alignment = alignment;
@@ -67,7 +66,7 @@ function ChatApp() {
       const sendMessage = () => {
         if (message) {
           const alignment = 'right';
-          socket.emit('sendMessageToChatGeneral', { content: message, chat_id: chatId, alignment, sender_name: user.name });
+          socket.emit('sendMessageToChatGeneral', { content: message, chat_id: chatId, alignment, sender_name: user.name, sender_image: user.imageUrl });
           setMessage('');
       }
     }
@@ -87,9 +86,14 @@ function ChatApp() {
         </div>
       ) : (
         <div>
-          <strong>{message.sender_name}:</strong>
-          <br />
-          {message.content}
+          <div className={styles.messageContent}>
+            <div className={styles.avatar}>
+              <img src={message.sender_image} alt="Avatar" />
+            </div>
+            <strong>{message.sender_name}:</strong>
+            <br />
+            {message.content}
+          </div>
         </div>
       )}
                     </div>

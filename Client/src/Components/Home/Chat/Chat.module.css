@@ -1,88 +1,102 @@
 /* chatAppStyles.module.css */
 .chatContainer {
-    width: 80%;
-    background-color: #ccc;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #e6e4e4;
-  border-radius: 5px;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  }
-  
-  .messageList {
-    display: flex;
-  flex-direction: column;
-  padding: 16px;
-  overflow-y: auto;
-  max-height: 70vh;
-  }
-  
-  .message {
-    margin: 1.5px;
-    padding: 8px;
-    border-radius: 8px;
-    max-width: 70%;
-    word-wrap: break-word;
-  }
-  
-  .messageSent {
-    background-color: #DCF8C6;
-    color: #000;
-    border-radius: 15px;
-    margin: 5px 0;
-    padding: 10px;
-    max-width: 70%;
-    align-self: flex-end;
-  }
+  width: 80%;
+  background-color: #ccc;
+max-width: 600px;
+margin: 0 auto;
+padding: 20px;
+border: 1px solid #e6e4e4;
+border-radius: 5px;
+height: 500px;
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+}
 
-  .rightAlign {
-    align-self: flex-end;
+.messageList {
+  display: flex;
+flex-direction: column;
+padding: 16px;
+overflow-y: auto;
+max-height: 70vh;
+}
+
+.message {
+  margin: 1.5px;
+  padding: 8px;
+  border-radius: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.messageSent {
   background-color: #DCF8C6;
-  }
-  
-  /* Estilo para mensajes de otros usuarios (a la izquierda) */
-  .leftAlign {
-    align-self: flex-start;
-  background-color: #ECE5DD;
-  }
-  
-  
-  input[type="text"] {
-    flex-grow: 1; /* El input toma todo el espacio disponible */
-    padding: 10px;
-    width: 82%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .sendButton {
-    width: 100px; /* Ancho fijo para el botón (ajústalo según tus preferencias) */
-    padding: 10px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .sendButton:hover {
-    background: #0056b3;
-  }
-  
-  /* Estilos personalizados para la barra de desplazamiento */
+  color: #000;
+  border-radius: 15px;
+  margin: 5px 0;
+  padding: 10px;
+  max-width: 70%;
+  align-self: flex-end;
+}
+
+.rightAlign {
+  align-self: flex-end;
+background-color: #DCF8C6;
+}
+
+/* Estilo para mensajes de otros usuarios (a la izquierda) */
+.leftAlign {
+  align-self: flex-start;
+background-color: #ECE5DD;
+}
+
+.avatar {
+width: 40px; /* Ajusta el tamaño del avatar según tus preferencias */
+height: 40px;
+border-radius: 50%; /* Hace que el avatar sea redondo */
+overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
+margin-right: 10px; /* Ajusta los márgenes según tus preferencias */
+}
+
+.avatar img {
+width: 100%;
+height: 100%;
+object-fit: cover; /* Ajusta el tamaño y recorte de la imagen */
+}
+
+
+input[type="text"] {
+  flex-grow: 1; /* El input toma todo el espacio disponible */
+  padding: 10px;
+  width: 82%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.sendButton {
+  width: 100px; /* Ancho fijo para el botón (ajústalo según tus preferencias) */
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sendButton:hover {
+  background: #0056b3;
+}
+
+/* Estilos personalizados para la barra de desplazamiento */
 .messageList::-webkit-scrollbar {
-    width: 8px; /* Ancho de la barra de desplazamiento */
+  width: 8px; /* Ancho de la barra de desplazamiento */
 }
 
 .messageList::-webkit-scrollbar-thumb {
-    background-color: #888; /* Color del botón de la barra de desplazamiento */
-    border-radius: 4px; /* Borde redondeado del botón de la barra de desplazamiento */
+  background-color: #888; /* Color del botón de la barra de desplazamiento */
+  border-radius: 4px; /* Borde redondeado del botón de la barra de desplazamiento */
 }
 
 .messageList::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Cambiar el color al pasar el mouse sobre la barra de desplazamiento */
+  background-color: #555; /* Cambiar el color al pasar el mouse sobre la barra de desplazamiento */
 }
