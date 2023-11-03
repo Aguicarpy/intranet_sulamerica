@@ -90,9 +90,11 @@ function ChatApp() {
             <div className={styles.avatar}>
               <img src={message.sender_image} alt="Avatar" />
             </div>
-            <strong>{message.sender_name}:</strong>
+            <div className={styles.messageText}>
+            <strong>{message.sender_name}</strong>
             <br />
             {message.content}
+            </div>
           </div>
         </div>
       )}
