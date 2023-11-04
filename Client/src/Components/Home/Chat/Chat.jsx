@@ -46,13 +46,11 @@ function ChatApp() {
         
         const messageInChatGeneralListener = (data) => {
           const newMessage = data.newMessage;
-          console.log('Mensaje enviado cliente: ', newMessage);
           // Determina la alineación en función del remitente
           const alignment = newMessage.sender_id === user.id ? 'right' : 'left';
           newMessage.alignment = alignment;
           
           setMessages((prevMessages) => [...prevMessages, newMessage]);
-          console.log(newMessage);
           
           if (messagesContainerRef.current) {
             const container = messagesContainerRef.current;
