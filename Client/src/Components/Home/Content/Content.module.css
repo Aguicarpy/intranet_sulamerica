@@ -15,7 +15,3 @@
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra suave */
 }
-
-.section:hover {
-  transform: scale(1.05); /* Escala la sección al pasar el cursor para un efecto de zoom */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
