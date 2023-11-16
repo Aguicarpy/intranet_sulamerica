@@ -78,11 +78,7 @@ function Card() {
   };
 
   const toggleCard = (index) => {
-    if (expandedCard === index) {
-      setExpandedCard(null);
-    } else {
-      setExpandedCard(index);
-    }
+    setExpandedCard((prevIndex) => (prevIndex === index ? null : index));
   };
 
   return (
@@ -91,7 +87,7 @@ function Card() {
         {convocations.map((convocation, index) => (
           <div
             key={index}
-            className={`card ${expandedCard === index ? "show" : ""}`}
+            className="card"
           >
             <div className="card__image-holder">
               <img
@@ -111,9 +107,7 @@ function Card() {
               </h2>
             </div>
             <div
-              className={`card-description ${
-                expandedCard === index ? "show" : ""
-              }`}
+              className={`card-description ${expandedCard === index ? 'show' : ''}`}
             >
               <p>{convocation.local.local}</p>
               <p>{convocation.position.department}</p>

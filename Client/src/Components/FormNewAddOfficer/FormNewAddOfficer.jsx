@@ -184,7 +184,7 @@ export const FormNewAddOfficer = () => {
               <input
                 type="file"
                 name="imageUrl"
-                accept="image/*"
+                accept=".jpg, .jpeg, .png"
                 onChange={onInputChange}
                 id="file"
                 style={{ display: "none" }} // Esta línea oculta el input file
@@ -216,7 +216,7 @@ export const FormNewAddOfficer = () => {
                           className={`form-control ${
                             errors.name && "is-invalid"
                           }`}
-                          placeholder="User Name *"
+                          placeholder="Nombre de usuario"
                           value={name}
                           ref={focusRef}
                           name="name"
@@ -232,7 +232,7 @@ export const FormNewAddOfficer = () => {
                           className={`form-control ${
                             errors.email && "is-invalid"
                           }`}
-                          placeholder="Ingrese Email *"
+                          placeholder="Email"
                           value={email}
                           name="email"
                           onChange={onInputChange}
@@ -244,7 +244,7 @@ export const FormNewAddOfficer = () => {
                           className={`form-control ${
                             errors.password && "is-invalid"
                           }`}
-                          placeholder="Password *"
+                          placeholder="Contraseña"
                           value={password}
                           name="password"
                           onChange={onInputChange}
@@ -276,7 +276,7 @@ export const FormNewAddOfficer = () => {
                           className={`form-control ${
                             errors.phone && "is-invalid"
                           }`}
-                          placeholder="Enter phone *"
+                          placeholder="Número de teléfono"
                           value={phone}
                           onChange={onInputChange}
                         />

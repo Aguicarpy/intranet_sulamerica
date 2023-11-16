@@ -20,7 +20,18 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'uploads',
-    format: (req, file) => ['jpg', 'jpeg', 'png'].includes(file.mimetype.split('/')[1]) ? 'jpg' : 'png',
+    format: (req, file) => {
+      const allowedFormats = ['jpg', 'jpeg', 'png'];
+      const fileFormat = file.mimetype.split('/')[1];
+
+      // Verificar si el formato del archivo es permitido
+      if (allowedFormats.includes(fileFormat)) {
+        return fileFormat;
+      }
+
+      // Si el formato no es permitido, lanza un error
+      throw new Error('Formato de archivo no permitido. Solo se permiten archivos JPG, JPEG y PNG.');
+    },
   },
 });
 const multerUpload = multer({ storage: storage });

@@ -9,7 +9,7 @@ const httpServer = http.createServer(server);
 // Configurar Socket.io en el servidor HTTP
 const io = socketIo(httpServer, {
     cors: {
-      origin: 'http://localhost:5173', 
+      origin: 'http://localhost:5174', 
       methods: ['GET', 'POST'],
       credentials: true,
     },

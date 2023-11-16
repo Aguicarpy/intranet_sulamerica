@@ -7,12 +7,13 @@ const SearchBarUser = ({ setSearchResults, }) => {
 
     const dispatch = useDispatch()
     const [searchString, setSearchString] = useState("");
+    const [noResults, setNoResults] = useState(false);
     
     function handleChange(event) {
         setSearchString(event.target.value);
 
-        if (event.target.value.length === 0) {
-            dispatch(getAllUsers()).then(() => setSearchResults([]));
+        if (setSearchResults.length === 0 && !noResults) {
+            dispatch(setSearchResults([]));
         } else {
             dispatch(searchOfficer(event.target.value)).then((data) => {setSearchResults(data.payload)});
         }
@@ -34,6 +35,7 @@ const SearchBarUser = ({ setSearchResults, }) => {
     return(
         <div >
             <form onSubmit={(event) => event.preventDefault()}>
+                
                 <input className={styles.textBox} type="search" placeholder="Buscar Funcionario"  value={searchString} onChange={handleChange}/>
             </form>
         </div>

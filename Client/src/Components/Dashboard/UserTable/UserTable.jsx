@@ -87,6 +87,7 @@ function UserTable({ users, onUserDelete, filteredUsers, onUpdateUser }) {
                           </td>
                           <td>
                             <button style={{marginTop:"5px"}} onClick={()=>handleUpdateUser(user.id)} className={styles.type}>Editar</button>
+                            <button style={{marginTop:"5px"}} onClick={()=>handleUpdateUser(user.id)} className={styles.type}>Eliminar</button>
                           </td>
                         </tr>
                       ))
