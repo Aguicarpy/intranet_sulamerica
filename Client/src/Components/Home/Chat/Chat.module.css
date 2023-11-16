@@ -76,12 +76,20 @@ object-fit: cover;
 }
 
 
-input[type="text"] {
+.input {
   flex-grow: 1;
   padding: 10px;
   width: 82%;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.inputContainer {
+  display: flex;
+  /* margin-top: 313px; */
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 .sendButton {

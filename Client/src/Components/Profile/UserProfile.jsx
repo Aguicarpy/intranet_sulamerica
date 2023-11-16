@@ -276,7 +276,7 @@ export const UserProfile = () => {
                       type="file"
                       name='imageUrl'
                       id="fileInput"
-                      accept="image/*"
+                      accept=".jpg, .jpeg, .png"
                       style={{ display: "none" }}
                       onChange={handleImageChange}
                     />

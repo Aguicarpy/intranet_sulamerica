@@ -1,6 +1,6 @@
 .calendarContainer {
     width: 100% !important;
-    max-width: 3000px !important;
+    /* max-width: 1000px !important; */
     margin: 0 auto !important;
     font-family: Arial, sans-serif !important;
     position: relative;

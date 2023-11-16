@@ -61,10 +61,11 @@ const LoginForm = () => {
       <form >
         <h3>Iniciar Sesión</h3>
         <div >
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email</label><br />
           <input
             type="text"
-            className={styles["login-block input"]}
+            // className={styles["login-block input email"]}
+            style={{ padding: "0 20px 0 50px", width: "100%" }}
             id="email"
             name="email"
             value={user.email}
