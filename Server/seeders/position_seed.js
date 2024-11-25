@@ -264,4 +264,4 @@ async function seedPositions() {
 
   seedPositions();
 
-//Ejecutar en la terminal el comando ===> node Server/seeder/position_seed.js
+//Ejecutar en la terminal el comando ===> node Server/seeders/position_seed.js
