@@ -69,4 +69,4 @@ async function seedLocals() {
 
 seedLocals();
 
-//Ejecutar en la terminal el comando ===> node Server/seeder/local_seed.js
+//Ejecutar en la terminal el comando ===> node Server/seeders/local_seed.js
